@@ -1,0 +1,214 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+
+#tree-container {
+  font-family: Arial, sans-serif;
+  padding: 10px;
+}
+
+.tree-node {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.tree-node span {
+  display: inline-block;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.tree-node span:hover {
+  background-color: #e0e0e0;
+}
+
+.tree-node .toggle {
+  font-weight: bold;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.node-label {
+  padding: 5px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.node-label:hover {
+  background-color: #e0e0e0;
+}
+
+.node-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+}
+
+.selected {
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+}
+
+#node-tooltip {
+  background: #ffffff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #333;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.context-menu {
+  display: none;
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  border-radius: 5px;
+}
+
+.context-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 5px 0;
+}
+
+.context-menu ul li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.context-menu ul li:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.property-panel {
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  min-width: 250px;
+  max-width: 60vw;
+  /* Max width 50% of viewport */
+  min-height: 100px;
+  max-height: 80vh;
+  /* Prevent it from being too large */
+  background: rgb(248, 229, 229);
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  display: none;
+  z-index: 1000;
+  border-radius: 5px;
+  overflow: auto;
+  /* Enables scrolling if needed */
+  resize: both;
+  /* Allows user resizing */
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+.panel-header button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#property-content {
+  word-wrap: break-word;
+  /* Prevents text overflow */
+
+}
+
+/* Search bar container */
+.search-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  max-width: 300px;
+  position: relative;
+  background: white;
+}
+
+/* Search input field */
+.search-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  padding: 3px;
+}
+
+/* Icons inside search bar */
+.search-icon,
+.advanced-search-icon {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  padding: 3px;
+}
+
+/* Advanced search panel */
+.advanced-search-panel {
+  display: none;
+  position: absolute;
+  top: 40px;
+  /* Position it right below the search bar */
+  right: 10px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 50%;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+/* Close button */
+.close-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 3px 6px;
+  cursor: pointer;
+  float: right;
+}
+
+/* Form fields in the advanced search */
+.advanced-search-panel input {
+  display: block;
+  width: 55%;
+  margin: 5px 0;
+  padding: 5px;
+}
+
+/* Search button */
+.advanced-search-btn {
+  background: #007bff;
+  color: white;
+  padding: 5px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.advanced-search-btn:hover {
+  background: #0056b3;
+}
