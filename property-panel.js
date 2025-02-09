@@ -1,11 +1,12 @@
 console.log(`property-panel.js loaded - Web Memo extension is active`);
 
-let panel, panelHeader, tagContainer
+let panel, panelHeader, tagContainer,  readonlyTagsDiv 
 document.addEventListener('treeContentLoaded', function () {
     panel = document.getElementById("property-panel");
     panelHeader = document.getElementById("property-panel-header")
     console.log(`property-panel.js loaded - Web Memo extension is active`, panelHeader);
     tagContainer = document.getElementById("tag-container")
+    readonlyTagsDiv = document.getElementById("readonly-tags");
 //    tagContainer.style.display = "none";
     tagContainer.addEventListener("click", () => {
         focusInput()
@@ -50,6 +51,7 @@ export function showPropertyPanel(node) {
     editButton.onclick = () => showEditPanel(node);
     panelContent.appendChild(editButton);
     panel.style.display = "block";
+    renderTags();
 
 }
 
@@ -193,6 +195,8 @@ function removeTag(tag) {
 
 function renderTags() {
     tagsDiv.innerHTML = "";
+    readonlyTagsDiv.innerHTML = "";
+
     selectedTags.forEach(tag => {
         const tagEl = document.createElement("div");
         tagEl.classList.add("tag");
@@ -201,6 +205,12 @@ function renderTags() {
             removeTag(tag);
         })
         tagsDiv.appendChild(tagEl);
+
+        // Read-only tags
+        const readonlyTagEl = document.createElement("div");
+        readonlyTagEl.classList.add("readonly-tag");
+        readonlyTagEl.textContent = tag;
+        readonlyTagsDiv.appendChild(readonlyTagEl);
     });
 }
 
