@@ -19,3 +19,19 @@ export function generateGUID() {
         return v.toString(16);
     });
 }
+
+
+export const getJSONFile = (url) => {
+    return new Promise((resolve, reject) => {
+        fetch(url, { method: 'GET' })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                resolve(response.json())
+            })
+            .catch(err =>
+                resolve(1)
+            );
+    })
+}
