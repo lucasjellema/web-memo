@@ -1,0 +1,66 @@
+{
+  "id": "proj-1739089910771",
+  "name": "Web Memo Development Case",
+  "type": "project",
+  "notes": "",
+  "children": [
+    {
+      "id": "f6dd99f4-8a34-471d-a4fb-971637c80855",
+      "name": "Material Symbols & Icons - Google Fonts",
+      "url": "https://fonts.google.com/icons",
+      "pageUrl": "https://fonts.google.com/icons",
+      "pageTitle": "Material Symbols & Icons - Google Fonts",
+      "pageHeader": "",
+      "scope": "page",
+      "notes": "",
+      "dateCreated": "2025-02-09T08:03:37.015Z"
+    },
+    {
+      "id": "754aaa70-0bec-4313-9cde-43b7c5f28ab8",
+      "name": "ChatGPT: Sharing Chrome Extension Guide",
+      "url": "https://chatgpt.com/share/67a8616e-35a0-8005-9e99-01ec7cf16298",
+      "pageUrl": "https://chatgpt.com/share/67a8616e-35a0-8005-9e99-01ec7cf16298",
+      "pageTitle": "Sharing Chrome Extension Guide",
+      "pageHeader": "undefined",
+      "scope": "page",
+      "notes": "",
+      "dateCreated": "Sun Feb 09 2025 09:04:15 GMT+0100 (Central European Standard Time)"
+    },
+    {
+      "id": "e2c61d63-832c-4ae7-852c-8e93c599130d",
+      "name": "Free Online Image Editor - ResizePixel",
+      "url": "https://www.resizepixel.com/",
+      "pageUrl": "https://www.resizepixel.com/",
+      "pageTitle": "Free Online Image Editor - ResizePixel",
+      "pageHeader": "Free online image editor",
+      "scope": "page",
+      "type": "page",
+      "notes": "",
+      "dateCreated": "2025-02-09T09:07:26.812Z"
+    },
+    {
+      "id": "871da495-29ab-417f-9904-96d27645ff51",
+      "name": "How to Load an External HTML File Using JavaScript | Delft Stack",
+      "url": "https://www.delftstack.com/howto/javascript/load-html-file-javascript/",
+      "pageUrl": "https://www.delftstack.com/howto/javascript/load-html-file-javascript/",
+      "pageTitle": "How to Load an External HTML File Using JavaScript | Delft Stack",
+      "pageHeader": "How to Load an External HTML File Using JavaScript",
+      "scope": "page",
+      "type": "page",
+      "notes": "",
+      "dateCreated": "2025-02-09T15:59:12.312Z"
+    },
+    {
+      "id": "d9532bf8-9059-4756-8ad8-0a3c30c971be",
+      "name": "::view-transition - CSS: Cascading Style Sheets | MDN",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/::view-transition",
+      "pageUrl": "https://developer.mozilla.org/en-US/docs/Web/CSS/::view-transition",
+      "pageTitle": "::view-transition - CSS: Cascading Style Sheets | MDN",
+      "pageHeader": "::view-transition",
+      "scope": "page",
+      "type": "page",
+      "notes": "",
+      "dateCreated": "2025-02-09T15:59:49.236Z"
+    }
+  ]
+}
