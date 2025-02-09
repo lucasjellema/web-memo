@@ -280,9 +280,7 @@ const importProject = (node) => {
 
 const importRemoteProject = async (node, remoteURL) => {
     try {
-
         let remoteMemoProjectURL = remoteURL || prompt("Enter URL for remote Web Memo Project:");
-
         const data = await getJSONFile(remoteMemoProjectURL);
         //TODO reassign new id values
         // check if file contains a root project that itself has multiple projects

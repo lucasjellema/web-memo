@@ -212,3 +212,49 @@ body {
 .advanced-search-btn:hover {
   background: #0056b3;
 }
+
+
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid #ccc;
+  padding: 5px;
+  min-height: 40px;
+  border-radius: 5px;
+}
+.tag {
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  margin: 5px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+}
+.tag .remove {
+  margin-left: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.tag-input {
+  border: none;
+  outline: none;
+  padding: 5px;
+  flex-grow: 1;
+}
+.suggestions {
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  position: absolute;
+  background: white;
+  display: none;
+  width: 200px;
+}
+.suggestions div {
+  padding: 5px;
+  cursor: pointer;
+}
+.suggestions div:hover {
+  background: #f0f0f0;
+}
