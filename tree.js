@@ -1,4 +1,4 @@
-import { saveProjects, getSavedProjects, getJSONFile } from './utils.js';
+import { saveProjects, getSavedProjects, getJSONFile, getQueryParam } from './utils.js';
 import { showPropertyPanel, hidePropertyPanel } from './property-panel.js';
 import { prepareSearch } from './search.js';
 let changed = false;
@@ -24,6 +24,10 @@ let selectedNode
 let expandedNodes = new Set(); // Store expanded node IDs
 
 export function createTree(parent, nodes) {
+    // only attempt the following when nodes are iterable
+    // test nodes 
+    if (!Array.isArray(nodes)) return
+
     for (const node of nodes) {
 
         const isRoot = (node.type == "root")
@@ -252,10 +256,10 @@ const importProject = (node) => {
         const reader = new FileReader();
         reader.onload = () => {
             const data = JSON.parse(reader.result);
+            if (!node.children) node.children = [];
             //TODO reassign new id values
             // check if file contains a root project that itself has multiple projects
             if (data.type === 'root') {
-                if (!node.children) node.children = [];
                 data.children.forEach(importedChild => {
                     if (importedChild.type === 'project') {
                         importedChild.id = `proj-${Date.now()}`; // Unique ID
@@ -265,6 +269,7 @@ const importProject = (node) => {
             } else {
                 node.children.push(data);
             }
+            changed = true
             refreshTree();
         };
         reader.readAsText(file);
@@ -273,26 +278,40 @@ const importProject = (node) => {
 }
 
 
-const importRemoteProject = async (node) => {
+const importRemoteProject = async (node, remoteURL) => {
+    try {
 
-    const remoteMemoProjectURL = prompt("Enter URL for remote Web Memo Project:");
-    const data = await getJSONFile(remoteMemoProjectURL);
+        let remoteMemoProjectURL = remoteURL || prompt("Enter URL for remote Web Memo Project:");
 
-    //TODO reassign new id values
-    // check if file contains a root project that itself has multiple projects
-    if (data.type === 'root') {
+        const data = await getJSONFile(remoteMemoProjectURL);
+        //TODO reassign new id values
+        // check if file contains a root project that itself has multiple projects
         if (!node.children) node.children = [];
-        data.children.forEach(importedChild => {
-            if (importedChild.type === 'project') {
-                importedChild.id = `proj-${Date.now()}`; // Unique ID
-                node.children.push(importedChild);
-            }
-        })
-    } else {
-        node.children.push(data);
+        if (data.type === 'root') {
+            data.children.forEach(importedChild => {
+                if (importedChild.type === 'project') {
+                    importedChild.id = `proj-${Date.now()}`; // Unique ID
+                    node.children.push(importedChild);
+                }
+            })
+        } else {
+            //TODO reassign new id values
+            data.id = `proj-${Date.now()}`; // Unique ID
+            node.children.push(data);
+        }
+        changed = true
+        refreshTree();
+        return node
+    } catch (error) {
+        console.error(error);
+        return node
     }
-    refreshTree();
 };
+
+
+const loadDataFromRemote = async (remoteURL, data) => {
+    await importRemoteProject(data[0], remoteURL);
+}
 
 
 document.addEventListener("click", (event) => {
@@ -354,7 +373,7 @@ function refreshTree() {
 }
 
 
-document.addEventListener("treeContentLoaded", () => {
+document.addEventListener("treeContentLoaded", async () => {
     let closePropertyPanelButton = document.getElementById("closePropertyPanelButton")
     if (closePropertyPanelButton) {
         closePropertyPanelButton.addEventListener("click", () => hidePropertyPanel())
@@ -366,8 +385,14 @@ document.addEventListener("treeContentLoaded", () => {
         data = projects
     }
     expandedNodes.add(0);
-    console.log(expandedNodes)
-    createTree(container, data);
+
+
+
+
+    const remoteURL = getQueryParam("remoteURL");
+    if (remoteURL) {
+        await loadDataFromRemote(remoteURL, data);
+    } else   createTree(container, data);
     prepareSearch(data)
 });
 

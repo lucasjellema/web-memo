@@ -3,7 +3,7 @@ const STORAGE_KEY = 'web-memo-projects';   // LocalStorage key for the projects 
 // Get all saved graphs from local storage
 export function getSavedProjects() {
     const projects = localStorage.getItem(STORAGE_KEY);
-    return projects ? JSON.parse(projects) : [];
+    return projects && "undefined" !== projects ? JSON.parse(projects) : [];
 }
 
 // Save projects to  local storage
@@ -35,3 +35,8 @@ export const getJSONFile = (url) => {
             );
     })
 }
+
+export     function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
