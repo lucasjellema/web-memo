@@ -1,13 +1,4 @@
-import { processWebmemoMessage } from './processWebmemoMessage.js';
 import { addTreeNode, createTree } from './tree.js';
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === 'webmemoProfile') {
-    const memoNode = processWebmemoMessage(message);
-    addTreeNode(memoNode);
-  }
-
-});
 
 document.addEventListener('DOMContentLoaded', function () {
 fetch("web-memo.html")

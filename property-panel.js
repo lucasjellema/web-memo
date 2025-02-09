@@ -1,8 +1,16 @@
-const panel = document.getElementById("property-panel");
-const panelHeader = document.getElementById("property-panel-header")
+console.log(`property-panel.js loaded - Web Memo extension is active`);
 
+let panel, panelHeader
+document.addEventListener('treeContentLoaded', function () {
+ panel = document.getElementById("property-panel");
+ panelHeader = document.getElementById("property-panel-header")
+ console.log(`property-panel.js loaded - Web Memo extension is active`, panelHeader);
+})
 
 document.addEventListener("click", (event) => {
+    // panel = document.getElementById("property-panel");
+    // panelHeader = document.getElementById("property-panel-header")
+    // console.log(`property-panel.js loaded - Web Memo extension is active`, panel);
     if (!panel.contains(event.target) && !event.target.classList.contains("node-label")) {
         hidePropertyPanel();
     }
@@ -44,6 +52,29 @@ export function showPropertyPanel(node) {
 export function hidePropertyPanel() {
     panel.style.display = "none";
 }
+
+// from editable property panel in network-navigator
+// let options
+// const datalistId = `datalist-${key}`;
+// if (editable) {
+//     const suggestions = getTopValuesForProperty(cy, key);
+//     options = suggestions.map(value => `<option value="${value}">${value}</option>`).join('');
+// }
+
+
+// const div = document.createElement('div');
+// div.innerHTML = `<label>${key}: </label>`;
+// if (options) {
+//     div.innerHTML +=
+//         `<input list="${datalistId}" value="${data[key]}" data-key="${key}" />
+//   <datalist id="${datalistId}">
+//     ${options}
+//   </datalist>`
+// } else {
+//     div.innerHTML +=
+//         `<input type="text" value="${value}" data-key="${key}" ${!editable ? 'disabled' : ''} />`
+// }
+// propertyList.appendChild(div);
 
 
 function showEditPanel(node) {

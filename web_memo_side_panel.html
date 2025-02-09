@@ -19,59 +19,7 @@
 
 <body>
     <h1>Web Memo</h1>
-    <div class="search-container" style="position: relative; display: inline-block; float: right; margin: 10px;">
-        <input type="text" class="search-input" id="searchField" placeholder="Search...">
-        <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" class="search-icon" id="searchBtn" alt="Search">
-        <img src="https://cdn-icons-png.flaticon.com/512/126/126472.png" class="advanced-search-icon" id="toggleAdvancedSearch" alt="Advanced Search">
-    </div>
-
-    <!-- Advanced Search Panel (Initially Hidden) -->
-    <div class="advanced-search-panel" id="advancedSearchPanel">
-        <button class="close-btn" id="closeAdvancedSearch">[X]</button>
-        <h4>Advanced Search</h4>
-        <label>Contains:</label>
-            <input type="text"  id="searchFieldAdvanced" />
-
-        <label>Type:</label>
-        <label style="display: inline-block; margin: 2px 5px"><input type="checkbox" id="pageCheckbox" value="page" checked>Page</label>
-        <label style="display: inline-block; margin: 2px 5px"><input type="checkbox" id="linkCheckbox" value="link" checked>Link</label>
-        <label style="display: inline-block; margin: 2px 5px"><input type="checkbox" id="imageCheckbox" value="image" checked>Image</label>
-        <label>Date Range: 
-            <select id="dateRange">
-                <option value="any">Any Time</option>
-                <option value="lastDay">Last Day</option>
-                <option value="lastWeek">Last Week</option>
-                <option value="lastMonth">Last Month</option>
-                <option value="lastQuarter">Last Quarter</option>
-                <option value="lastYear">Last Year</option>
-            </select>
-        </label>
-        <button class="advanced-search-btn" id="advancedSearchBtn">Search</button>
-    </div>
-    <div id="node-tooltip"
-        style="display: none; position: absolute; background: #f8f9fa; padding: 8px; border-radius: 4px; border: 1px solid #ddd; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); font-size: 12px; z-index: 10;">
-    </div>
-    <div id="tree-container">    
-</div>
-    <div id="content"></div>
-    <div id="context-menu" class="context-menu">
-        <ul>
-            <li id="delete-node">Delete</li>
-            <li id="create-child">Create Child Project</li>
-            <li id="merge">Merge Projects</li>
-            <li id="export-project">Export Project</li>
-            <li id="import-project-file">Import Project (from file)</li>
-        </ul>
-    </div>
-    <div id="property-panel" class="property-panel">
-        <div  class="panel-header">
-            <span id="property-panel-header">Properties</span>
-            <button id="closePropertyPanelButton" >[X]</button>
-        </div>
-        <div id="property-content"></div>
-    </div>
-    <div id="edit-panel" class="panel property-panel" style="display: none;"></div>
-
+    <div id="web-memo-app"></div>
     <script src="side_panel.js" type="module"></script>
 </body>
 

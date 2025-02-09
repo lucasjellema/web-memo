@@ -12,11 +12,12 @@ export const processWebmemoMessage = (message) => {
     newNode.pageTitle = message.pageTitle;
     newNode.pageHeader = message.pageHeader;
     newNode.scope = message.scope;
-    if (newNode.scope == "link") {
+    newNode.type = message.scope;
+    if (newNode.type == "link") {
         newNode.url = message.linkUrl;
         newNode.name = "link: "+message.linkText;
     }
-    if (newNode.scope == "image") {
+    if (newNode.type == "image") {
         newNode.imageSrc = message.imageSrc;
         if (message.altText) newNode.name = "image: "+message.altText;
     }
