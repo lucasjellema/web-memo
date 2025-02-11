@@ -38,7 +38,7 @@ document.addEventListener('treeContentLoaded', function () {
 // propertyList.appendChild(div);
 
 let nodeToEdit
-const typeList = ['project', 'page', 'link', 'image', 'location', 'object', 'movie']
+const typeList = ['project', 'page', 'link', 'image', 'location', 'object', 'movie','technology', 'github', 'note','news','person','music','tv', 'book']
 
 export function showEditPanel(node) {
     nodeToEdit = node
@@ -61,9 +61,9 @@ export function showEditPanel(node) {
                 div.innerHTML += `<textarea data-key="${key}" rows="4" cols="40">${node[key]}</textarea>`
             } else
                 if (key === "type") {
-                    let options = typeList.map(value => `<option value="${value}">${value}</option>`).join('');
+                    let options = typeList.map(value => `<option value="${value}" ${value == node[key]?"selected":""}>${value}</option>`).join('');
                     div.innerHTML +=
-                        `<select data-key="${key}">
+                        `<select data-key="${key}" ">
                           ${options}
                         </select>`
 
@@ -90,7 +90,7 @@ export function showEditPanel(node) {
 
 
 function saveNodeEdits(node, form) {
-    let inputs = form.querySelectorAll("input, textarea"); // Include textareas
+    let inputs = form.querySelectorAll("input, textarea, select"); // Include textareas
     inputs.forEach(input => {
         let key = input.dataset.key;
         node[key] = input.value; // Update node
