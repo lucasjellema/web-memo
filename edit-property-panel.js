@@ -52,7 +52,8 @@ export function showEditPanel(node) {
     let form = document.createElement("form");
 
     for (let key in node) {
-        if (key !== "children" && key !== "id" && key !== "tags") { // Skip children property
+        // TODO all internal properties should start with _
+        if (key !== "children" && key !== "id" && key !== "tags"&& key !== "show") { 
             const div = document.createElement('div');
             div.innerHTML = `<label>${key}: </label>`;
 
