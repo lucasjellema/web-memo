@@ -17,6 +17,7 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "webmemoGoogleMapsInfoForNetwork",
     title: "Make Web Memo for Google Maps Location",
+    documentUrlPatterns:["https://www.google.com/maps/*"]
   });
 });
 
