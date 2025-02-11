@@ -31,6 +31,12 @@ chrome.runtime.onInstalled.addListener(() => {
     contexts: ["page"],
     documentUrlPatterns: ["*://www.imdb.com/*"]
   });
+  chrome.contextMenus.create({
+    id: "webmemoGitHubInfoForNetwork",
+    title: "Make Web Memo for GitHub Repository",
+    contexts: ["page"],
+    documentUrlPatterns: ["*://github.com/*"]
+  });
 });
 
 
@@ -52,6 +58,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
   if (info.menuItemId === "webmemoImdbInfoForNetwork") {
     await handleImdbInfo(info, tab);
+  }if (info.menuItemId === "webmemoGitHubInfoForNetwork") {
+    await handleGitHubInfo(info, tab);
   }
   
 });
@@ -100,6 +108,20 @@ async function handleImdbInfo(info, tab) {
       type: 'imdbProfile',
       profile: response.data,
       imdbUrl: response.imdbUrl
+    });
+  })()
+}
+
+
+async function handleGitHubInfo(info, tab) {
+  console.log('github info clicked ', info);
+  (async () => {
+    const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+    const response = await chrome.tabs.sendMessage(tab.id, { type: 'webmemoGitHubRequest' });
+    console.log(response);
+    chrome.runtime.sendMessage({
+      type: 'githubProfile',
+      profile: response.data,
     });
   })()
 }

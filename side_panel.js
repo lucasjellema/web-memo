@@ -1,6 +1,7 @@
 import { processWebmemoMessage } from './processWebmemoMessage.js';
 import {processLinkedInProfile} from './processLinkedInProfile.js'
 import {processImdbProfile} from './processImdbProfile.js'
+import { processGitHubProfile } from './processGitHubProfile.js'; 
 import { addTreeNode, createTree } from './tree.js';
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -14,6 +15,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
   if (message.type === 'imdbProfile') {
     const memoNode = processImdbProfile(message);
+    addTreeNode(memoNode);
+  }
+  if (message.type === 'githubProfile') {
+    const memoNode = processGitHubProfile(message);
     addTreeNode(memoNode);
   }
 
