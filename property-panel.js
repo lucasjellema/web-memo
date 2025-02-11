@@ -33,7 +33,7 @@ export function showPropertyPanel(node) {
 
     for (const key in node) {
         // skip property id 
-        if (key === 'id' || key === 'children' || key === 'subtype' || key === 'shape'|| key === 'tags') continue;
+        if (key === 'id' || key === 'children' || key === 'subtype' || key === 'shape'|| key === 'tags'|| key === 'show') continue;
 
 
         let value = node[key];
@@ -75,7 +75,7 @@ export function showPropertyPanel(node) {
         }
         propertyList.appendChild(div);
     }
-    if (node.tags) renderTags(node.tags);
+    renderTags(node.tags);
     editButton.onclick = () => showEditPanel(node);
     closeButton.onclick = () => hidePropertyPanel();
 
@@ -96,6 +96,7 @@ export function hidePropertyPanel() {
 
 function renderTags(tags) {
     readonlyTagsDiv.innerHTML = "";
+    if (tags)
     for (const tag of tags) {
         // Read-only tags
         const readonlyTagEl = document.createElement("div");
