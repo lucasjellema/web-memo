@@ -23,6 +23,16 @@ export const processWebmemoMessage = (message) => {
     }
     newNode.notes = ""
     newNode.dateCreated = new Date()
+
+    if (message.scope==="location") enrichNodeWithLocation(newNode, message)
     return newNode
 
+}
+
+
+const enrichNodeWithLocation = (node, message) => {
+    console.log(`enriching location`)
+    node.latitude = message.locationDetails.latitude
+    node.longitude = message.locationDetails.longitude
+    if (message.locationDetails.name) node.name = message.locationDetails.name
 }

@@ -1,9 +1,9 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("Received message:", message);
   if (message.type === 'webmemoInfoRequest') {
-    console.log("Web Memo Info request received: ");
+    console.log("Web Memo Info request received: for ", message.scope);
     let profile = getLocationProfile();
-    console.log("Profile:", profile)
+    console.log("Profile for Location:", profile)
     sendResponse({ status: 'success', data: profile, pageUrl: window.location.href });
   }
 });
