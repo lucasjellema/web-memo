@@ -1,4 +1,4 @@
-import { saveProjects, getSavedProjects, getJSONFile, getQueryParam } from './utils.js';
+import { saveProjects, getSavedProjects, getJSONFile, getQueryParam, generateGUID } from './utils.js';
 import { showPropertyPanel, hidePropertyPanel } from './property-panel.js';
 import { prepareSearch } from './search.js';
 let changed = false;
@@ -41,21 +41,16 @@ export function createTree(parent, nodes) {
         const hasChildren = node.children && node.children.length > 0; // Check if the node has any children
         toggle.textContent = hasChildren ? (isRoot || expandedNodes.has(node.id) ? "▼ " : "▶ ") : "• ";
 
+        div.appendChild(toggle);
 
-        let icon = document.createElement("img");
-        let src
-        if (node.type == "project") {
-            icon.src = `images/folder.png`;
-        } else if (node.scope == "page") {
-            icon.src = `images/page.png`;
-        } else if (node.scope == "link") {
-            icon.src = `images/link.png`;
-        } else if (node.scope == "image") {
-            icon.src = `images/image.png`;
+        let iconSource = typeImageMap[node.type]
+        if (iconSource) {
+            let icon = document.createElement("img");
+            icon.src = `images/${iconSource}`;
+            icon.classList.add("node-icon");
+            icon.alt = node.scope || node.type
+            div.appendChild(icon);
         }
-        icon.classList.add("node-icon");
-        icon.alt = node.scope || node.type
-
         let name = document.createElement("span");
         name.textContent = node.name;
         name.classList.add("node-label");
@@ -67,8 +62,6 @@ export function createTree(parent, nodes) {
             name.classList.add("selected");
         }
 
-        div.appendChild(toggle);
-        if (icon.src) div.appendChild(icon);
         div.appendChild(name);
         parent.appendChild(div);
 
@@ -220,6 +213,13 @@ function showContextMenu(x, y, node) {
         createChildOption.style.display = "none";
     }
 
+    const createObjectOption = document.getElementById("create-object");
+    if (node?.type !== "root") {
+        createObjectOption.style.display = "block";
+        createObjectOption.onclick = () => createObject(node);
+    } else {
+        createObjectOption.style.display = "none";
+    }
 
     const exportProjectOption = document.getElementById("export-project");
     if (node?.type === "project" || node?.type === "root") {
@@ -353,6 +353,24 @@ function createChildProject(node) {
     refreshTree();
 }
 
+function createObject(node) {
+    const newObjectName = prompt("Enter name for new object :");
+    if (!newObjectName) return;
+
+    const newObject = {
+        id: generateGUID(), // Unique ID
+        name: newObjectName,
+        type: "object",
+        notes: "",
+        children: []
+    };
+    if (!node.children) node.children = [];
+    node.children.push(newObject)
+    changed = true
+    expandedNodes.add(node.id);
+    refreshTree();
+}
+
 const mergeProjects = (sourceNode, targetNode) => {
     // all children of selectedNode are added to node
     if (!targetNode.children) targetNode.children = [];
@@ -390,7 +408,7 @@ document.addEventListener("treeContentLoaded", async () => {
     const remoteURL = getQueryParam("remoteURL");
     if (remoteURL) {
         await loadDataFromRemote(remoteURL, data);
-    } else   createTree(container, data);
+    } else createTree(container, data);
     prepareSearch(data)
 });
 
@@ -423,4 +441,15 @@ export const addTreeNode = (memoNode) => {
     changed = true
     expandedNodes.add(parentNode.id);
     refreshTree();
+}
+
+const typeImageMap = {
+    "project": "folder.png",
+    "object": "object.png",
+    "page": "page.png",
+    "link": "link.png",
+    "image": "image.png",
+    "location": "location.png",
+
+
 }
