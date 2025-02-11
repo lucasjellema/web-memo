@@ -14,6 +14,10 @@ chrome.runtime.onInstalled.addListener(() => {
     title: "Make Web Memo for Image",
     contexts: ["image"],
   });
+  chrome.contextMenus.create({
+    id: "webmemoGoogleMapsInfoForNetwork",
+    title: "Make Web Memo for Google Maps Location",
+  });
 });
 
 
@@ -27,7 +31,9 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === "webmemoPageInfoForNetwork") {
     await handleWebmemoInfo(info, tab,'page');
   }
-  
+  if (info.menuItemId === "webmemoGoogleMapsInfoForNetwork") {
+    await handleWebmemoInfo(info, tab,'location');
+  }  
 });
 
 

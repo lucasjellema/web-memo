@@ -21,7 +21,11 @@
         "web-memo-content.js"
       ],
       "run_at": "document_end"
-    }
+    }, {
+        "matches": ["https://www.google.com/maps/*"],
+        "js": ["google-maps-content.js"]
+      }
+    
   ],
   "action": {
     "default_icon": {
