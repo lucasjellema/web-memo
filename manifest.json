@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Web Memo",
-  "description": "A Chrome Extension to bundle Web Pages, Links, Images and Notes in hierarchically organized projects. Similar to bookmarks - with more ease and control.",
-  "version": "0.6",
+  "description": "A Chrome Extension to bundle Web Pages, Links, Images and Notes as well as Locations, Persons, Movies and more in hierarchically organized projects. Similar to bookmarks - with more ease and control.",
+  "version": "0.7",
   "permissions": [
     "contextMenus",
     "activeTab",
@@ -10,7 +10,7 @@
     "sidePanel"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "content-scrapers/background.js"
   },
   "content_scripts": [
     {
@@ -18,14 +18,36 @@
         "<all_urls>"
       ],
       "js": [
-        "web-memo-content.js"
+        "content-scrapers/web-memo-content.js"
       ],
       "run_at": "document_end"
-    }, {
-        "matches": ["https://www.google.com/maps/*"],
-        "js": ["google-maps-content.js"]
-      }
-    
+    },
+    {
+      "matches": [
+        "https://www.google.com/maps/*"
+      ],
+      "js": [
+        "content-scrapers/google-maps-content.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.linkedin.com/*"
+      ],
+      "js": [
+        "content-scrapers/linkedin-content.js"
+      ],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "https://www.imdb.com/*"
+      ],
+      "js": [
+        "content-scrapers/imdb-content.js"
+      ],
+      "run_at": "document_end"
+    }
   ],
   "action": {
     "default_icon": {

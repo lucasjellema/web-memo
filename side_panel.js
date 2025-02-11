@@ -1,9 +1,19 @@
 import { processWebmemoMessage } from './processWebmemoMessage.js';
+import {processLinkedInProfile} from './processLinkedInProfile.js'
+import {processImdbProfile} from './processImdbProfile.js'
 import { addTreeNode, createTree } from './tree.js';
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'webmemoProfile') {
     const memoNode = processWebmemoMessage(message);
+    addTreeNode(memoNode);
+  }
+  if (message.type === 'linkedInProfile') {
+    const memoNode = processLinkedInProfile(message);
+    addTreeNode(memoNode);
+  }
+  if (message.type === 'imdbProfile') {
+    const memoNode = processImdbProfile(message);
     addTreeNode(memoNode);
   }
 

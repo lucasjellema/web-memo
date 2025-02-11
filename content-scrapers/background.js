@@ -19,6 +19,18 @@ chrome.runtime.onInstalled.addListener(() => {
     title: "Make Web Memo for Google Maps Location",
     documentUrlPatterns:["https://www.google.com/maps/*"]
   });
+  chrome.contextMenus.create({
+    id: "webmemoLinkedInInfoForNetwork",
+    title: "Make Web Memo for LinkedIn Contact",
+    contexts: ["page"],
+    documentUrlPatterns: ["*://www.linkedin.com/*"]
+  });
+  chrome.contextMenus.create({
+    id: "webmemoImdbInfoForNetwork",
+    title: "Make Web Memo for IMDb",
+    contexts: ["page"],
+    documentUrlPatterns: ["*://www.imdb.com/*"]
+  });
 });
 
 
@@ -35,6 +47,13 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === "webmemoGoogleMapsInfoForNetwork") {
     await handleWebmemoInfo(info, tab,'location');
   }  
+  if (info.menuItemId === "webmemoLinkedInInfoForNetwork") {
+    await handleLinkedInInfo(info, tab);
+  }
+  if (info.menuItemId === "webmemoImdbInfoForNetwork") {
+    await handleImdbInfo(info, tab);
+  }
+  
 });
 
 
@@ -55,16 +74,33 @@ async function handleWebmemoInfo(info, tab, scope) {
   })()
 }
 
+async function handleLinkedInInfo(info, tab) {
+  console.log('linkedIn person info clicked ', info);
+  //await chrome.sidePanel.open({ tabId: tab.id });
+  (async () => {
+    const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+    const response = await chrome.tabs.sendMessage(tab.id, { type: 'webmemoLinkedInInfoRequest' });
+    console.log(response);
+    chrome.runtime.sendMessage({
+      type: 'linkedInProfile',
+      profile: response.data,
+      linkedInUrl: response.linkedInUrl
+    });
+  })()
+}
 
-// {
-//   "menuItemId": "customImageContextMenu",
-//   "editable": false,
-//   "mediaType": "image",
-//   "srcUrl": "https://example.com/image.jpg",
-//   "pageUrl": "https://example.com",
-//   "frameUrl": "https://example.com/frame",
-//   "linkUrl": "https://example.com/link",
-//   "selectionText": "",
-//   "wasChecked": false,
-//   "checked": false
-// }
+
+async function handleImdbInfo(info, tab) {
+  console.log('imdb info clicked ', info);
+  (async () => {
+    const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+    const response = await chrome.tabs.sendMessage(tab.id, { type: 'webmemoImdbInfoRequest' });
+    console.log(response);
+    chrome.runtime.sendMessage({
+      type: 'imdbProfile',
+      profile: response.data,
+      imdbUrl: response.imdbUrl
+    });
+  })()
+}
+
