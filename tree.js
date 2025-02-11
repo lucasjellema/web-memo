@@ -450,6 +450,14 @@ const typeImageMap = {
     "link": "link.png",
     "image": "image.png",
     "location": "location.png",
+    "github": "github.png",
+    "podcast": "podcast.png",
+    "technology": "technology.png",
+    "book": "book.png",
+    "person": "person.png",
+    "note": "note.png",
+
+
 
 
 }
