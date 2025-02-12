@@ -17,6 +17,14 @@ const getGitHubProfile = () => {
 
   profile.pageTitle = document.title;
   profile.pageUrl = window.location.href;
+
+  //find DIV element with id repository-container-header
+  const div = document.getElementById("repository-container-header")
+  // find strong with itemprop="name"
+  const strongElement = div.querySelector(`strong[itemprop="name"]`);
+  profile.repositoryName = strongElement.textContent 
+  
+
   // // find first h1 element
   // const h1Element = document.querySelector('h1');
   // if (h1Element) {

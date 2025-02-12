@@ -2,14 +2,16 @@ import { generateGUID } from './utils.js';
 
 
 export const processGitHubProfile = (message) => {
-
+const profile = message.profile
     console.log("processGitHubProfile", message)
     const newNode = {}
     newNode.id = generateGUID();
-    newNode.name = message.pageTitle;
-    newNode.url = message.pageUrl;
-    newNode.pageUrl = message.pageUrl;
-    newNode.pageTitle = message.pageTitle;
+    newNode.name = profile.pageTitle;
+    newNode.url = profile.pageUrl;
+    newNode.pageUrl = profile.pageUrl;
+    newNode.pageTitle = profile.pageTitle;
+    newNode.repositoryName = profile.repositoryName
+    newNode.type = 'github'
     // newNode.pageHeader = message.pageHeader;
     // newNode.scope = message.scope;
     // newNode.type = message.scope;
