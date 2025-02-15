@@ -1,4 +1,4 @@
-chrome.runtime.onInstalled.addListener(() => {  
+chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "webmemoPageInfoForNetwork",
     title: "Make Web Memo for Page",
@@ -17,7 +17,7 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     id: "webmemoGoogleMapsInfoForNetwork",
     title: "Make Web Memo for Google Maps Location",
-    documentUrlPatterns:["https://www.google.com/maps/*"]
+    documentUrlPatterns: ["https://www.google.com/maps/*"]
   });
   chrome.contextMenus.create({
     id: "webmemoLinkedInInfoForNetwork",
@@ -42,6 +42,11 @@ chrome.runtime.onInstalled.addListener(() => {
     documentUrlPatterns: ["*://www.goodreads.com/*"]
   });
   chrome.contextMenus.create({
+    id: "webmemoSpotifyInfoForNetwork",
+    title: "Make Web Memo for Spotify Song",
+    documentUrlPatterns: ["*://open.spotify.com/*"]
+  });
+  chrome.contextMenus.create({
     id: "webmemoWikipediaInfoForNetwork",
     title: "Make Web Memo for Wikipedia Page",
     documentUrlPatterns: ["*://en.wikipedia.org/*"]
@@ -51,17 +56,17 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === "webmemoLinkInfoForNetwork") {
-    await handleWebmemoInfo(info, tab,'link');
+    await handleWebmemoInfo(info, tab, 'link');
   }
   if (info.menuItemId === "webmemoImageInfoForNetwork") {
-    await handleWebmemoInfo(info, tab,'image');
+    await handleWebmemoInfo(info, tab, 'image');
   }
   if (info.menuItemId === "webmemoPageInfoForNetwork") {
-    await handleWebmemoInfo(info, tab,'page');
+    await handleWebmemoInfo(info, tab, 'page');
   }
   if (info.menuItemId === "webmemoGoogleMapsInfoForNetwork") {
-    await handleWebmemoInfo(info, tab,'location');
-  }  
+    await handleWebmemoInfo(info, tab, 'location');
+  }
   if (info.menuItemId === "webmemoLinkedInInfoForNetwork") {
     await handleLinkedInInfo(info, tab);
   }
@@ -70,13 +75,17 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
   if (info.menuItemId === "webmemoGitHubInfoForNetwork") {
     await handleGitHubInfo(info, tab);
-  }  if (info.menuItemId === "webmemoGoodreadsInfoForNetwork") {
+  } 
+  if (info.menuItemId === "webmemoGoodreadsInfoForNetwork") {
     await handleGoodreadsInfo(info, tab);
+  }
+  if (info.menuItemId === "webmemoSpotifyInfoForNetwork") {
+    await handleSpotifyInfo(info, tab);
   }
   if (info.menuItemId === "webmemoWikipediaInfoForNetwork") {
     await handleWikipediaInfo(info, tab);
   }
-  
+
 });
 
 
@@ -84,7 +93,7 @@ async function handleWebmemoInfo(info, tab, scope) {
   (async () => {
     console.log(`${scope} web memo info request ` + JSON.stringify(info))
     const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-    const response = await chrome.tabs.sendMessage(tab.id, { type: 'webmemoInfoRequest', scope: scope, linkUrl: info.linkUrl, imageSrc : info.srcUrl });
+    const response = await chrome.tabs.sendMessage(tab.id, { type: 'webmemoInfoRequest', scope: scope, linkUrl: info.linkUrl, imageSrc: info.srcUrl });
     console.log(response);
     const profile = response.data;
     profile.type = 'webmemoProfile';
@@ -148,6 +157,19 @@ async function handleGoodreadsInfo(info, tab) {
     console.log(response);
     chrome.runtime.sendMessage({
       type: 'goodreadsProfile',
+      profile: response.data,
+    });
+  })()
+}
+
+async function handleSpotifyInfo(info, tab) {
+  console.log('spotify info clicked ', info);
+  (async () => {
+    const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+    const response = await chrome.tabs.sendMessage(tab.id, { type: 'webmemoSpotifyRequest' });
+    console.log(response);
+    chrome.runtime.sendMessage({
+      type: 'spotifyProfile',
       profile: response.data,
     });
   })()

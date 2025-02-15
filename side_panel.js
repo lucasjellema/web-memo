@@ -3,6 +3,7 @@ import {processLinkedInProfile} from './processLinkedInProfile.js'
 import {processImdbProfile} from './processImdbProfile.js'
 import { processGitHubProfile } from './processGitHubProfile.js'; 
 import { processGoodreadsProfile } from './processGoodreadsProfile.js';
+import { processSpotifyProfile } from './processSpotifyProfile.js';
 import { processWikipediaProfile } from './processWikipediaProfile.js';
 import { addTreeNode } from './tree.js';
 
@@ -25,6 +26,10 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   }
   if (message.type === 'goodreadsProfile') {
     const memoNode = processGoodreadsProfile(message);
+    addTreeNode(memoNode);
+  }
+  if (message.type === 'spotifyProfile') {
+    const memoNode = processSpotifyProfile(message);
     addTreeNode(memoNode);
   }
   if (message.type === 'wikipediaProfile') {

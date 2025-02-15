@@ -68,6 +68,15 @@
     },
     {
       "matches": [
+        "https://open.spotify.com/*"
+      ],
+      "js": [
+        "content-scrapers/spotify-content.js"
+      ],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
         "https://en.wikipedia.org/*"
       ],
       "js": [
