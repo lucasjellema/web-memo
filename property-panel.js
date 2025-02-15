@@ -76,7 +76,7 @@ export function showPropertyPanel(node,harvestedTags) {
         propertyList.appendChild(div);
     }
     renderTags(node.tags);
-    editButton.onclick = () => showEditPanel(node, harvestedTags);
+    editButton.onclick = () => { hidePropertyPanel();   showEditPanel(node, harvestedTags);}
     closeButton.onclick = () => hidePropertyPanel();
 
     // Show the modal
