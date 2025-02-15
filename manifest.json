@@ -56,6 +56,15 @@
         "content-scrapers/github-content.js"
       ],
       "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "https://en.wikipedia.org/*"
+      ],
+      "js": [
+        "content-scrapers/wikipedia-content.js"
+      ],
+      "run_at": "document_end"
     }
   ],
   "action": {

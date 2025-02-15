@@ -1,6 +1,6 @@
 const STORAGE_KEY = 'web-memo-projects';   // LocalStorage key for the projects data
 
-// Get all saved graphs from local storage
+// Get all saved projects from local storage
 export function getSavedProjects() {
     const projects = localStorage.getItem(STORAGE_KEY);
     return projects && "undefined" !== projects ? JSON.parse(projects) : [];
@@ -36,7 +36,18 @@ export const getJSONFile = (url) => {
     })
 }
 
-export     function getQueryParam(param) {
+export function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
-  }
+}
+
+export const harvestTags = (node, allTags) => {
+    // collect all tags in node and child nodes and add to Set tags
+    // add node.tags to allTags
+
+    
+    if (node.nodes)
+        for (let childNode of node.nodes) {
+            harvestTags(childNode, allTags)
+        }
+} 

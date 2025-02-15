@@ -2,11 +2,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log("Received message:", message);
   if (message.type === 'webmemoInfoRequest') {
     console.log("Web Memo Info request received: ");
-    if (message.scope === 'page' || message.scope === 'link' || message.scope === 'image') {
-      let profile = getProfile(message.scope, message.linkUrl, message.imageSrc);
-      console.log("Profile:", profile)
-      sendResponse({ status: 'success', data: profile, pageUrl: window.location.href });
-    }
+    let profile = getProfile(message.scope, message.linkUrl, message.imageSrc);
+    console.log("Profile:", profile)
+    sendResponse({ status: 'success', data: profile, pageUrl: window.location.href });
   }
 });
 
@@ -19,7 +17,7 @@ const getProfile = (scope, linkUrl, imageSrc) => {
 
   profile.pageTitle = document.title;
   profile.pageUrl = window.location.href;
-  // find first h1 element
+// find first h1 element
   const h1Element = document.querySelector('h1');
   if (h1Element) {
     profile.pageHeader = h1Element.innerText || h1Element.textContent;

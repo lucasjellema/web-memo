@@ -1,4 +1,4 @@
-import { saveProjects, getSavedProjects, getJSONFile, getQueryParam, generateGUID } from './utils.js';
+import { saveProjects, getSavedProjects, getJSONFile, getQueryParam, generateGUID, harvestTags } from './utils.js';
 import { showPropertyPanel, hidePropertyPanel } from './property-panel.js';
 import { prepareSearch } from './search.js';
 let changed = false;
@@ -42,14 +42,14 @@ export function createTree(parent, nodes) {
         toggle.textContent = hasChildren ? (isRoot || expandedNodes.has(node.id) ? "▼ " : "▶ ") : "• ";
 
         div.appendChild(toggle);
-
+        let treeNode = document.createElement("span");
         let iconSource = typeImageMap[node.type]
         if (iconSource) {
             let icon = document.createElement("img");
             icon.src = `images/${iconSource}`;
             icon.classList.add("node-icon");
             icon.alt = node.scope || node.type
-            div.appendChild(icon);
+            treeNode.appendChild(icon);
         }
         let name = document.createElement("span");
         name.textContent = node.name;
@@ -62,11 +62,12 @@ export function createTree(parent, nodes) {
             name.classList.add("selected");
         }
 
-        div.appendChild(name);
+        treeNode.appendChild(name);
+        div.appendChild(treeNode)
         parent.appendChild(div);
 
         // Add selection event
-        name.addEventListener("click", () => {
+        treeNode.addEventListener("click", () => {
             // Deselect previously selected node
             document.querySelectorAll(".selected").forEach(el => el.classList.remove("selected"));
 
@@ -80,13 +81,13 @@ export function createTree(parent, nodes) {
             if (!isRoot) showPropertyPanel(node);
         });
 
-        name.addEventListener("dblclick", () => {
+        treeNode.addEventListener("dblclick", () => {
             if (node.url) {
                 window.open(node.url, "_blank");
             }
         });
 
-        name.addEventListener("contextmenu", (e) => {
+        treeNode.addEventListener("contextmenu", (e) => {
             e.preventDefault();
             showContextMenu(e.pageX, e.pageY, node);
         });
@@ -255,19 +256,22 @@ const importProject = (node) => {
         const file = input.files[0];
         const reader = new FileReader();
         reader.onload = () => {
-            const data = JSON.parse(reader.result);
+            const importedData = JSON.parse(reader.result);
             if (!node.children) node.children = [];
             //TODO reassign new id values
             // check if file contains a root project that itself has multiple projects
-            if (data.type === 'root') {
-                data.children.forEach(importedChild => {
+            if (importedData.type === 'root') {
+                importedData.children.forEach(importedChild => {
                     if (importedChild.type === 'project') {
-                        importedChild.id = `proj-${Date.now()}`; // Unique ID
+                        importedChild.id = `proj-${generateGUID()}`; // Unique ID
                         node.children.push(importedChild);
+                        harvestTags(importedChild, data.harvestedTags)
+
                     }
                 })
             } else {
-                node.children.push(data);
+                node.children.push(importedData);
+                harvestTags(importedData, data.harvestedTags)
             }
             changed = true
             refreshTree();
@@ -281,23 +285,24 @@ const importProject = (node) => {
 const importRemoteProject = async (node, remoteURL) => {
     try {
         let remoteMemoProjectURL = remoteURL || prompt("Enter URL for remote Web Memo Project:");
-        const data = await getJSONFile(remoteMemoProjectURL);
+        const importedData = await getJSONFile(remoteMemoProjectURL);
         //TODO reassign new id values
         // check if file contains a root project that itself has multiple projects
         if (!node.children) node.children = [];
-        if (data.type === 'root') {
-            data.children.forEach(importedChild => {
+        if (importedData.type === 'root') {
+            importedData.children.forEach(importedChild => {
                 if (importedChild.type === 'project') {
-                    importedChild.id = `proj-${Date.now()}`; // Unique ID
+                    importedChild.id = `proj-${generateGUID()}`; // Unique ID
                     node.children.push(importedChild);
                 }
             })
         } else {
             //TODO reassign new id values
-            data.id = `proj-${Date.now()}`; // Unique ID
-            node.children.push(data);
+            importedData.id = `proj-${generateGUID()}`; // Unique ID
+            node.children.push(importedData);
         }
         changed = true
+        harvestTags(importedData, data.harvestedTags)
         refreshTree();
         return node
     } catch (error) {
@@ -400,6 +405,9 @@ document.addEventListener("treeContentLoaded", async () => {
     if (projects?.length > 0) {
         data = projects
     }
+    const harvestedTags = new Set()  
+    harvestTags(data, harvestTags);
+    data.harvestedTags = harvestedTags 
     expandedNodes.add(0);
 
 
