@@ -40,8 +40,10 @@ document.addEventListener('treeContentLoaded', function () {
 let nodeToEdit
 const typeList = ['project', 'page', 'link', 'image', 'location', 'object', 'movie','technology', 'github', 'note','news','person','music','tv', 'book']
 
-export function showEditPanel(node) {
+export function showEditPanel(node, harvestedTags) {
     nodeToEdit = node
+    existingTags = Array.from(harvestedTags.values())
+
     let editPanel = document.getElementById("edit-panel");
     // replace current selectedTags with contents from node.tags
     selectedTags.clear();
@@ -80,7 +82,7 @@ export function showEditPanel(node) {
     }
 
     // // Save Button
-    saveButton.onclick = () => saveNodeEdits(node, form);
+    saveButton.onclick = () => saveNodeEdits(node, form, harvestedTags);
     cancelButton.onclick = () => (editPanel.style.display = "none");
     propertyEditContent.appendChild(form);
     tagContainer.style.display = "block";
@@ -89,7 +91,7 @@ export function showEditPanel(node) {
 }
 
 
-function saveNodeEdits(node, form) {
+function saveNodeEdits(node, form, harvestedTags) {
     let inputs = form.querySelectorAll("input, textarea, select"); // Include textareas
     inputs.forEach(input => {
         let key = input.dataset.key;
@@ -97,7 +99,12 @@ function saveNodeEdits(node, form) {
     });
     // save tags
     node.tags = Array.from(selectedTags);
-    console.log("Saved tags on node", node.tags);
+
+    // add all tags to harvestedTags 
+    for (const tag of node.tags) {
+        harvestedTags.add(tag);
+    }
+    
 
     // Add new property if specified
     const key = newPropertyKey.value.trim();
@@ -111,7 +118,7 @@ function saveNodeEdits(node, form) {
 
 }
 
-const existingTags = ["JavaScript", "HTML", "CSS", "React", "Vue", "Angular", "Node.js", "Python"];
+let existingTags = ["JavaScript", "HTML", "CSS", "React", "Vue", "Angular", "Node.js", "Python"];
 const selectedTags = new Set();
 
 let tagsDiv, input, suggestionsDiv

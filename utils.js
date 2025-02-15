@@ -44,10 +44,12 @@ export function getQueryParam(param) {
 export const harvestTags = (node, allTags) => {
     // collect all tags in node and child nodes and add to Set tags
     // add node.tags to allTags
+    if (node.tags) {
+        allTags.add(...node.tags)
+    }
 
-    
-    if (node.nodes)
-        for (let childNode of node.nodes) {
+    if (node.children)
+        for (let childNode of node.children) {
             harvestTags(childNode, allTags)
         }
 } 

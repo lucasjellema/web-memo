@@ -78,7 +78,7 @@ export function createTree(parent, nodes) {
             selectedNodeId = node.id;
             selectedNode = node
             selectedNodeElement = div;
-            if (!isRoot) showPropertyPanel(node);
+            if (!isRoot) showPropertyPanel(node, data.harvestedTags);
         });
 
         treeNode.addEventListener("dblclick", () => {
@@ -405,19 +405,20 @@ document.addEventListener("treeContentLoaded", async () => {
     if (projects?.length > 0) {
         data = projects
     }
-    const harvestedTags = new Set()  
-    harvestTags(data, harvestTags);
-    data.harvestedTags = harvestedTags 
     expandedNodes.add(0);
-
-
-
 
     const remoteURL = getQueryParam("remoteURL");
     if (remoteURL) {
         await loadDataFromRemote(remoteURL, data);
     } else createTree(container, data);
     prepareSearch(data)
+    
+    
+    const harvestedTags = new Set()  
+    harvestTags(data[0], harvestedTags);
+    data.harvestedTags = harvestedTags 
+    console.log("harvested tags",data.harvestedTags)
+
 });
 
 const exportProject = (node) => {

@@ -25,7 +25,7 @@ document.addEventListener("click", (event) => {
 
 let nodeToShow = null;
 
-export function showPropertyPanel(node) {
+export function showPropertyPanel(node,harvestedTags) {
     nodeToShow = node;
     modalTitle.textContent = node.name;
     propertyList.innerHTML = ''; // Clear the property list
@@ -76,7 +76,7 @@ export function showPropertyPanel(node) {
         propertyList.appendChild(div);
     }
     renderTags(node.tags);
-    editButton.onclick = () => showEditPanel(node);
+    editButton.onclick = () => showEditPanel(node, harvestedTags);
     closeButton.onclick = () => hidePropertyPanel();
 
     // Show the modal
