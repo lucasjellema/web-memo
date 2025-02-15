@@ -2,8 +2,9 @@ import { processWebmemoMessage } from './processWebmemoMessage.js';
 import {processLinkedInProfile} from './processLinkedInProfile.js'
 import {processImdbProfile} from './processImdbProfile.js'
 import { processGitHubProfile } from './processGitHubProfile.js'; 
+import { processGoodreadsProfile } from './processGoodreadsProfile.js';
 import { processWikipediaProfile } from './processWikipediaProfile.js';
-import { addTreeNode, createTree } from './tree.js';
+import { addTreeNode } from './tree.js';
 
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   if (message.type === 'webmemoProfile') {
@@ -20,6 +21,10 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   }
   if (message.type === 'githubProfile') {
     const memoNode = processGitHubProfile(message);
+    addTreeNode(memoNode);
+  }
+  if (message.type === 'goodreadsProfile') {
+    const memoNode = processGoodreadsProfile(message);
     addTreeNode(memoNode);
   }
   if (message.type === 'wikipediaProfile') {

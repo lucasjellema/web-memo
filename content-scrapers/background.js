@@ -37,6 +37,11 @@ chrome.runtime.onInstalled.addListener(() => {
     documentUrlPatterns: ["*://github.com/*"]
   });
   chrome.contextMenus.create({
+    id: "webmemoGoodreadsInfoForNetwork",
+    title: "Make Web Memo for Goodreads Book",
+    documentUrlPatterns: ["*://www.goodreads.com/*"]
+  });
+  chrome.contextMenus.create({
     id: "webmemoWikipediaInfoForNetwork",
     title: "Make Web Memo for Wikipedia Page",
     documentUrlPatterns: ["*://en.wikipedia.org/*"]
@@ -65,6 +70,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
   if (info.menuItemId === "webmemoGitHubInfoForNetwork") {
     await handleGitHubInfo(info, tab);
+  }  if (info.menuItemId === "webmemoGoodreadsInfoForNetwork") {
+    await handleGoodreadsInfo(info, tab);
   }
   if (info.menuItemId === "webmemoWikipediaInfoForNetwork") {
     await handleWikipediaInfo(info, tab);
@@ -129,6 +136,18 @@ async function handleGitHubInfo(info, tab) {
     console.log(response);
     chrome.runtime.sendMessage({
       type: 'githubProfile',
+      profile: response.data,
+    });
+  })()
+}
+async function handleGoodreadsInfo(info, tab) {
+  console.log('goodreads info clicked ', info);
+  (async () => {
+    const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+    const response = await chrome.tabs.sendMessage(tab.id, { type: 'webmemoGoodreadsRequest' });
+    console.log(response);
+    chrome.runtime.sendMessage({
+      type: 'goodreadsProfile',
       profile: response.data,
     });
   })()
