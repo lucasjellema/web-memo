@@ -115,6 +115,22 @@ const scrapeBookData = async (profile) => {
           profile.characters = charactersValueElement.textContent.trim();
         }
       }
+// div class EditionDetails
+      const editionDetailsElement = document.querySelector('div.EditionDetails');
+      if (editionDetailsElement) {
+       // all divs with class="DescListItem"
+        const descListItems = editionDetailsElement.querySelectorAll('div.DescListItem');
+        if (descListItems) {
+          for (const descListItem of descListItems) {
+            const dtElement = descListItem.querySelector('dt');
+            const ddElement = descListItem.querySelector('dd');
+            if (dtElement && ddElement) {
+              profile[dtElement.textContent.trim()] = ddElement.textContent.trim();
+            }
+          }
+        }
+      }
+
     }
   }
   // find similar books
