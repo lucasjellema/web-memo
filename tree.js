@@ -412,12 +412,12 @@ document.addEventListener("treeContentLoaded", async () => {
         await loadDataFromRemote(remoteURL, data);
     } else createTree(container, data);
     prepareSearch(data)
-    
-    
-    const harvestedTags = new Set()  
+
+
+    const harvestedTags = new Set()
     harvestTags(data[0], harvestedTags);
-    data.harvestedTags = harvestedTags 
-    console.log("harvested tags",data.harvestedTags)
+    data.harvestedTags = harvestedTags
+    console.log("harvested tags", data.harvestedTags)
 
 });
 
@@ -465,6 +465,7 @@ const typeImageMap = {
     "book": "book.png",
     "person": "person.png",
     "note": "note.png",
+    "music": "music.png",
 
 
 

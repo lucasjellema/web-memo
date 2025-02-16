@@ -182,13 +182,24 @@ async function handleSpotifyInfo(info, tab) {
   console.log('spotify info clicked ', info);
   (async () => {
     const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-    const response = await chrome.tabs.sendMessage(tab.id, { type: 'webmemoSpotifyRequest' });
-    console.log(response);
-    chrome.runtime.sendMessage({
-      type: 'spotifyProfile',
-      profile: response.data,
+
+    // const response = await chrome.tabs.sendMessage(tab.id, { type: 'webmemoGoodreadsRequest' });
+    // The background script wraps sendMessage() in a Promise.
+    // The content script properly handles async responses.
+    // The return true; keeps the channel open until sendResponse() is called.
+    // Now await chrome.tabs.sendMessage() will actually wait for the response. 🚀
+    const spotifyResponse = await new Promise((resolve) => {
+      chrome.tabs.sendMessage(tab.id, { type: 'webmemoSpotifyRequest' }, (response) => {
+        console.log('in handler', response);
+        chrome.runtime.sendMessage({
+          type: 'spotifyProfile',
+          profile: response.data,
+        });
+        resolve(response);
+      });
     });
   })()
+
 }
 
 async function handleWikipediaInfo(info, tab) {

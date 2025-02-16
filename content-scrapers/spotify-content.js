@@ -1,11 +1,29 @@
-chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-  console.log("Received message:", message);
-  if (message.type === 'webmemoSpotifyRequest') {
-    console.log("Web Memo Spotify Info request received: ");
-    let profile = await getSpotifyProfile();
-    console.log("Profile:", profile)
-    sendResponse({ status: 'success', data: profile, pageUrl: window.location.href });
-  }
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  // I will let ChatGPT explain:
+  // chrome.tabs.sendMessage() only supports synchronous message passing by default. If the content script's listener is asynchronous, it doesn't return a response immediately, and sendMessage() doesn't actually wait for the async operation to complete. Instead, it resolves as soon as the listener returns, which may happen before your async operation is done.
+
+  // Solution:
+  // You need to return a Promise inside the message listener.
+  // Explanation:
+  // The message listener is asynchronous, but since the callback itself isn't async, we manually wrap it in an IIFE (Immediately Invoked Function Expression).
+  // The sendResponse function is used inside the async operation.
+  // The critical part: returning true from the listener keeps the messaging channel open, allowing the async operation to complete before sending the response.
+
+  (async () => {
+    try {
+      console.log("Received message:", message);
+      if (message.type === 'webmemoSpotifyRequest') {
+        console.log("Web Memo Spotify Info request received: ");
+        let profile = await getSpotifyProfile();
+        console.log("Profile:", profile)
+        sendResponse({ status: 'success', data: profile, pageUrl: window.location.href });
+      }
+    } catch (error) {
+      sendResponse({ success: false, error: error.message });
+    }
+  })();
+  return true; // Keeps the message channel open for async sendResponse
+
 });
 
 console.log('spotify-content.js loaded - Web Memo extension is active');
@@ -76,7 +94,7 @@ const scrapeSongData = async (profile) => {
       // iterate over all spans and find the one with textcontent "View credits" in div
       for (const span of contextMenuElement.querySelectorAll('span')) {
         if (span.textContent.trim() === 'View credits') {
-          
+
           const button = span.parentElement
           button.click();
           // wait 500 ms, then continue
@@ -93,10 +111,10 @@ const scrapeSongData = async (profile) => {
                   // find all siblings (of type anchor and span) under same parent element  
                   const siblings = pElement.parentElement.querySelectorAll('a, span');
                   // iterate over all siblings and add their text content to the writtenBy property
-                  const writtenBy=[]
+                  const writtenBy = []
                   for (const sibling of siblings) {
                     if (sibling.tagName === 'A' || sibling.tagName === 'SPAN') {
-//                      profile.writtenBy = profile.writtenBy ? `${profile.writtenBy}, ${sibling.textContent.trim()}` : sibling.textContent.trim();
+                      // TODO add href for Anchor elements
                       writtenBy.push(sibling.textContent.trim())
                     }
                   }
@@ -105,12 +123,12 @@ const scrapeSongData = async (profile) => {
                 if (pElement.textContent.trim() === 'Performed by') {
                   // find all siblings (of type anchor and span) under same parent element  
                   const siblings = pElement.parentElement.querySelectorAll('a, span');
-                  const performedBy=[]
+                  const performedBy = []
                   // iterate over all siblings and add their text content to the performedBy property
                   for (const sibling of siblings) {
                     if (sibling.tagName === 'A' || sibling.tagName === 'SPAN') {
+                      // TODO add href for Anchor elements
                       performedBy.push(sibling.textContent.trim())
-                      //profile.performedBy = profile.performedBy ? `${profile.performedBy}, ${sibling.textContent.trim()}` : sibling.textContent.trim();
                     }
                   }
                   profile.performedBy = performedBy
@@ -118,12 +136,12 @@ const scrapeSongData = async (profile) => {
                 if (pElement.textContent.trim() === 'Produced by') {
                   // find all siblings (of type anchor and span) under same parent element  
                   const siblings = pElement.parentElement.querySelectorAll('a, span');
-                  const producedBy=[]
+                  const producedBy = []
 
                   // iterate over all siblings and add their text content to the producedBy property
                   for (const sibling of siblings) {
                     if (sibling.tagName === 'A' || sibling.tagName === 'SPAN') {
-                      //profile.producedBy = profile.producedBy ? `${profile.producedBy}, ${sibling.textContent.trim()}` : sibling.textContent.trim();
+                      // TODO add href for Anchor elements
                       producedBy.push(sibling.textContent.trim())
                     }
                   }
@@ -150,100 +168,5 @@ function delay(milliseconds) {
   return new Promise(resolve => {
     setTimeout(resolve, milliseconds);
   });
-}
-
-
-const scrapeAuthorData = (profile) => {
-  // div with class authorLeftContainer
-  const authorLeftContainerElement = document.querySelector('div.authorLeftContainer');
-  if (authorLeftContainerElement) {
-    // find image
-    const imageElement = authorLeftContainerElement.querySelector('img');
-    profile.image = imageElement.src;
-  }
-  // find div with BookPageTitleSection
-  const authorNameElement = document.querySelector('h1.authorName');
-  if (authorNameElement) {
-    profile.name = authorNameElement.textContent.trim();
-
-    const div = authorNameElement.parentElement.parentElement
-    if (div) {
-      // iterate over all child nodes
-      for (const child of div.children) {
-        if (child.tagName === 'DIV' && "Born" === child.textContent?.trim()) {
-          console.log("Born", child.textContent.trim());
-          console.log("Born next - where", child.nextSibling.textContent.trim());
-          profile.birthplace = child.nextSibling.textContent.trim();
-          console.log("Born next next - when", child.nextSibling.nextSibling.textContent.trim());
-          profile.birthdate = child.nextSibling.nextSibling.textContent.trim();
-
-        }
-        if (child.tagName === 'DIV' && "Died" === child.textContent?.trim()) {
-          console.log("Died", child.textContent.trim());
-          console.log("Died next - ", child.nextSibling.textContent?.trim());
-          console.log("Died next next - when", child.nextSibling.nextSibling.textContent?.trim());
-          profile.died = child.nextSibling.nextSibling.textContent?.trim();
-        }
-        if (child.tagName === 'DIV' && "Website" === child.textContent?.trim()) {
-          console.log("Website", child.textContent.trim());
-          console.log("Website next - ", child.nextElementSibling.textContent?.trim());
-          profile.website = child.nextElementSibling.textContent?.trim();
-        }
-        if (child.tagName === 'DIV' && "Genre" === child.textContent?.trim()) {
-          console.log("Genre", child.textContent.trim());
-          console.log("Genere next - ", child.nextElementSibling.textContent?.trim());
-          profile.genres = child.nextElementSibling.textContent?.trim();
-        }
-      }
-
-    }
-  }
-
-
-  // div with class aboutAuthorInfo
-  const aboutAuthorInfoElement = document.querySelector('div.aboutAuthorInfo');
-  if (aboutAuthorInfoElement) {
-    // find description
-    const descriptionElement = aboutAuthorInfoElement.querySelector('span');
-    profile.description = descriptionElement?.textContent.trim();
-  }
-
-  // div with itemtype="https://schema.org/Collection"
-  const collectionElement = document.querySelector('div[itemtype="https://schema.org/Collection"]');
-  if (collectionElement) {
-    // find table
-    const tableElement = collectionElement.querySelector('table');
-    if (tableElement) {
-      // find all tr in table
-      const trElements = tableElement.querySelectorAll('tr');
-      if (trElements) {
-        const books = []
-        // iterate over all tr elements
-        for (const trElement of trElements) {
-          // find all td elements in tr
-          const tdElements = trElement.querySelectorAll('td');
-          if (tdElements) {
-            const book = {}
-            book.image = tdElements[0].querySelector('img').src
-            book.title = tdElements[0].querySelector('a').title
-            book.goodreadsUrl = tdElements[0].querySelector('a').href
-            const bookText = tdElements[1].querySelector('div')?.textContent
-            if (bookText) {
-              // find string published and then extract the next 5 characters
-              const publishedIndex = bookText.indexOf("published")
-              book.published = bookText.substring(publishedIndex + 12, publishedIndex + 16)
-              // find string "avg rating" and extract the 5 characters  before that string
-              const avgRatingIndex = bookText.indexOf("avg rating")
-              book.avgRating = bookText.substring(avgRatingIndex - 5, avgRatingIndex)
-
-            }
-
-            books.push(book)
-          }
-        }
-        profile.books = books
-      }
-    }
-  }
 }
 
