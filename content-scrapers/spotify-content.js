@@ -32,7 +32,14 @@ const getSpotifyProfile = async () => {
   const profile = {}
   profile.pageTitle = document.title;
   profile.pageUrl = window.location.href;
-  await scrapeSongData(profile);
+  // if url contains /artist/ 
+  if (window.location.href.includes('/artist/')) {
+    profile.subtype = 'artist'
+    const x = await scrapeArtistData(profile);
+  } else {
+    profile.subtype = 'song'
+    const x = await scrapeSongData(profile);
+  }
   return profile
 }
 
@@ -163,6 +170,127 @@ const scrapeSongData = async (profile) => {
   }
 
 }
+
+
+const scrapeArtistData = async (profile) => {
+  // section with data-testid="artist-page"
+  const artistPageElement = document.querySelector('section[data-testid="artist-page"]');
+  if (artistPageElement) {
+    // find h2 with text context equal to About
+    const h2s = artistPageElement.querySelectorAll('h2');
+    for (const h2 of h2s) {
+
+
+      if (h2.textContent.trim() === 'About') {
+        // find p element with text context equal to Description
+        const div = h2.nextElementSibling;
+        if (div) { // button /div /div 2
+          // get the textcontent of the div and then take the section that starts after the string "listeners"
+          const textContent = div.textContent.trim();
+          const startIndex = textContent.indexOf('monthly listeners');
+          if (startIndex !== -1) {
+            profile.description = textContent.substring(startIndex + 17).trim();
+          }
+        }
+      }
+    }
+
+
+    // find image
+    const imageElement = artistPageElement.querySelector('img');
+    profile.image = imageElement.src;
+    profile.artist = imageElement.alt;
+  }
+  // find section with aria-label="Fans also like" 
+  const fansAlsoLikeSection = document.querySelector('section[aria-label="Fans also like"]');
+  if (fansAlsoLikeSection) {
+    const div = fansAlsoLikeSection.querySelector('div[data-testid="grid-container"]');
+    if (div) {
+      // iterate over child elements
+      const fansAlsoLike = []
+      for (const element of div.children) {
+        if (element.tagName === 'DIV') {
+          const artist = {}
+          const image = element.querySelector('img');
+          if (image) {
+            artist.image = image.src;            
+          }
+          const ref = element.querySelector('a');
+          if (ref) {
+            artist.url = ref.href;
+            artist.name = ref.textContent.trim();            
+          }
+          fansAlsoLike.push(artist)
+        }
+      }
+      profile.fansAlsoLike = fansAlsoLike
+    }
+  }
+
+  // section with aria-label="Discography"
+  const discographySection = document.querySelector('section[aria-label="Discography"]');
+  if (discographySection) {
+
+    // div with data-testid="grid-container" 
+    const div = discographySection.querySelector('div[data-testid="grid-container"]');
+    if (div) {
+      // iterate over child elements
+      const discography = []
+      for (const element of div.children) {
+        if (element.tagName === 'DIV') {
+          const album = {}
+          const image = element.querySelector('img');
+          if (image) {
+            album.image = image.src;            
+          }
+          const ref = element.querySelector('a');
+          if (ref) {
+            album.url = ref.href;
+            album.name = ref.textContent.trim();            
+
+            const divNotes = ref.nextElementSibling
+            if (divNotes) {
+              // find child of type time and get the text content
+              const time = divNotes.querySelector('time');
+              if (time) {
+                // get datetime attribute
+                album.releaseDate = time.getAttribute('datetime');
+                // get text node that follows time element
+                const textNode = time.nextSibling;
+                if (textNode) {
+                  album.notes = textNode.textContent.trim();
+                }
+              }
+            }
+          }
+          discography.push(album)
+        }
+      }
+      profile.discography = discography
+    }
+
+    const ul = discographySection.querySelector('ul');
+    if (ul) {
+      // iterate over child elements
+      const discography = []
+      for (const element of ul.children) {
+        if (element.tagName === 'LI') {
+          const album = {}
+          const ref = element.querySelector('a');
+          if (ref) {
+            album.url = ref.href;
+            album.name = ref.textContent.trim();            
+          }
+          discography.push(album)
+        }
+      }
+      profile.discography = discography
+    }
+  }
+
+
+}
+
 
 function delay(milliseconds) {
   return new Promise(resolve => {
