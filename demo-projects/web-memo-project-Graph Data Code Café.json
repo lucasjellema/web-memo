@@ -1,0 +1,309 @@
+{
+  "id": "proj-1739709215846",
+  "name": "Graph Data Code Café",
+  "type": "project",
+  "notes": "",
+  "children": [
+    {
+      "id": "969fca15-123b-4056-9ea0-a7c1e75008d3",
+      "name": "Neo4j - Wikipedia",
+      "type": "technology",
+      "url": "https://en.wikipedia.org/wiki/Neo4j",
+      "pageUrl": "https://en.wikipedia.org/wiki/Neo4j",
+      "pageTitle": "Neo4j - Wikipedia",
+      "oneImage": "https://upload.wikimedia.org/wikipedia/commons/6/67/Neo4jLogo2024.png",
+      "logoImage": "https://upload.wikimedia.org/wikipedia/commons/6/67/Neo4jLogo2024.png",
+      "repositoryUrl": "https://github.com/neo4j/neo4j",
+      "writtenIn": "Java",
+      "initialRelease": "2007; 18 years ago (2007)[1]",
+      "stableRelease": "2025.01.0[2] \n   / 6 February 2025; 10 days ago (6 February 2025)",
+      "license": "Source code: GPLv3 and AGPLv3 with Commons ClauseBinaries: Freemium registerware",
+      "websiteUrl": "https://neo4j.com/",
+      "developers": "Neo4j Inc.",
+      "tags": [
+        "Graph database"
+      ],
+      "headline": "graph database implemented in Java",
+      "_wikidataURL": "https://www.wikidata.org/entity/Q1628290.json",
+      "_wikidataEntityId": "Q1628290",
+      "children": [
+        {
+          "id": "04c89cb1-961d-47ee-8c03-7a1a0606e154",
+          "name": "neo4j/neo4j: Graphs for Everyone",
+          "url": "https://github.com/neo4j/neo4j",
+          "pageUrl": "https://github.com/neo4j/neo4j",
+          "pageTitle": "neo4j/neo4j: Graphs for Everyone",
+          "repositoryName": "neo4j",
+          "type": "github",
+          "stars": "13.8k",
+          "watchers": "522",
+          "forks": "2.4k",
+          "dateCreated": "2025-02-16T12:37:00.554Z"
+        },
+        {
+          "id": "f77e0998-bdf7-43b0-8431-dd5afc279840",
+          "name": "Neo4j Graph Database & Analytics | Graph Database Management System",
+          "url": "https://neo4j.com/",
+          "pageUrl": "https://neo4j.com/",
+          "pageTitle": "Neo4j Graph Database & Analytics | Graph Database Management System",
+          "pageHeader": "Build What Others Can't for Generative AI",
+          "scope": "page",
+          "type": "page",
+          "notes": "",
+          "dateCreated": "2025-02-16T12:37:26.126Z",
+          "children": [
+            {
+              "id": "e68ce8e7-f896-4bd6-808a-afe374133d65",
+              "name": "Neo4j documentation - Neo4j Documentation",
+              "url": "https://neo4j.com/docs/",
+              "pageUrl": "https://neo4j.com/docs/",
+              "pageTitle": "Neo4j documentation - Neo4j Documentation",
+              "pageHeader": "Neo4j documentation",
+              "scope": "page",
+              "type": "page",
+              "notes": "",
+              "dateCreated": "2025-02-16T12:38:03.107Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proj-1739709759752",
+      "name": "tools & libraries",
+      "type": "project",
+      "notes": "",
+      "children": [
+        {
+          "id": "4714a6d9-72e8-49c4-bf4c-90100b036343",
+          "name": "Sigma.js",
+          "url": "https://www.sigmajs.org/",
+          "pageUrl": "https://www.sigmajs.org/",
+          "pageTitle": "Sigma.js",
+          "pageHeader": "sigma.js",
+          "scope": "page",
+          "type": "page",
+          "notes": "",
+          "dateCreated": "2025-02-16T12:42:44.206Z",
+          "children": [
+            {
+              "id": "eaa9cc58-7bca-407f-b9eb-513032ff3550",
+              "name": "A cartography of Wikipedia pages around data visualization",
+              "url": "https://www.sigmajs.org/demo/index.html",
+              "pageUrl": "https://www.sigmajs.org/demo/index.html",
+              "pageTitle": "A cartography of Wikipedia pages around data visualization",
+              "pageHeader": "A cartography of Wikipedia pages around data visualization",
+              "scope": "page",
+              "type": "page",
+              "notes": "",
+              "dateCreated": "2025-02-16T12:43:33.461Z"
+            }
+          ]
+        },
+        {
+          "id": "25fa7cbb-1c79-4e77-9b6b-890df2c81d59",
+          "name": "Cytoscape.js",
+          "url": "https://js.cytoscape.org/",
+          "pageUrl": "https://js.cytoscape.org/",
+          "pageTitle": "Cytoscape.js",
+          "pageHeader": "Cytoscape.js",
+          "scope": "page",
+          "type": "page",
+          "notes": "",
+          "dateCreated": "2025-02-16T12:43:52.868Z"
+        },
+        {
+          "id": "b9857bbd-ed56-4e11-a1ae-b872efcbea8a",
+          "name": "Make interactive network graphs without coding",
+          "url": "https://flourish.studio/visualisations/network-charts/",
+          "pageUrl": "https://flourish.studio/visualisations/network-charts/",
+          "pageTitle": "Make interactive network graphs without coding",
+          "pageHeader": "Examples",
+          "scope": "page",
+          "type": "page",
+          "notes": "",
+          "dateCreated": "2025-02-16T12:44:14.171Z"
+        },
+        {
+          "id": "544c762f-3083-4835-8b73-1288e2eacdc8",
+          "name": "PuppyGraph | Query Your Relational Data As A Graph. No ETL.",
+          "url": "https://www.puppygraph.com/",
+          "pageUrl": "https://www.puppygraph.com/",
+          "pageTitle": "PuppyGraph | Query Your Relational Data As A Graph. No ETL.",
+          "pageHeader": "Query your relational data as a graph in real-time. Zero ETL.",
+          "scope": "page",
+          "type": "page",
+          "notes": "",
+          "dateCreated": "2025-02-16T12:47:03.506Z",
+          "children": [
+            {
+              "id": "1af57852-2c1e-4730-9e5b-c37404de098a",
+              "name": "PuppyGraph | Query Your Relational Data As A Graph. No ETL.",
+              "url": "https://www.puppygraph.com/",
+              "pageUrl": "https://www.puppygraph.com/",
+              "pageTitle": "PuppyGraph | Query Your Relational Data As A Graph. No ETL.",
+              "pageHeader": "Query your relational data as a graph in real-time. Zero ETL.",
+              "scope": "image",
+              "type": "image",
+              "imageSrc": "https://cdn.prod.website-files.com/65d609edcc331dd0e4eb5167/67131e5f7761334e7bcf5917_Frame-1818%20(1).gif",
+              "notes": "",
+              "dateCreated": "2025-02-16T12:47:13.669Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "proj-1739710624154",
+      "name": "Graph Theory & History",
+      "type": "project",
+      "notes": "",
+      "children": [
+        {
+          "id": "69e9e92c-1191-46bd-985f-a60b61426f50",
+          "name": "Graph theory - Wikipedia",
+          "type": "page",
+          "url": "https://en.wikipedia.org/wiki/Graph_theory",
+          "pageUrl": "https://en.wikipedia.org/wiki/Graph_theory",
+          "pageTitle": "Graph theory - Wikipedia",
+          "oneImage": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Example_of_simple_undirected_graph_3.svg",
+          "headline": "study of graphs, which are mathematical structures used to model pairwise relations between objects",
+          "_wikidataURL": "https://www.wikidata.org/entity/Q131476.json",
+          "_wikidataEntityId": "Q131476",
+          "children": [
+            {
+              "id": "85618d06-54c3-4b2e-8692-6fa88f41a1fa",
+              "name": "Graph Analytics — Introduction and Concepts of Centrality | by Jatin Bhasin | TDS Archive | Medium",
+              "url": "https://medium.com/towards-data-science/graph-analytics-introduction-and-concepts-of-centrality-8f5543b55de3",
+              "pageUrl": "https://medium.com/towards-data-science/graph-analytics-introduction-and-concepts-of-centrality-8f5543b55de3",
+              "pageTitle": "Graph Analytics — Introduction and Concepts of Centrality | by Jatin Bhasin | TDS Archive | Medium",
+              "pageHeader": "Graph Analytics — Introduction and Concepts of Centrality",
+              "scope": "page",
+              "type": "page",
+              "notes": "",
+              "dateCreated": "2025-02-16T12:39:16.332Z"
+            },
+            {
+              "id": "61612b9f-5118-4caa-bf6d-fc9552f6bf96",
+              "name": "Max-flow Min-cut Algorithm | Brilliant Math & Science Wiki",
+              "url": "https://brilliant.org/wiki/max-flow-min-cut-algorithm/",
+              "pageUrl": "https://brilliant.org/wiki/max-flow-min-cut-algorithm/",
+              "pageTitle": "Max-flow Min-cut Algorithm | Brilliant Math & Science Wiki",
+              "pageHeader": "Max-flow Min-cut Algorithm",
+              "scope": "page",
+              "type": "page",
+              "notes": "",
+              "dateCreated": "2025-02-16T12:41:24.807Z"
+            }
+          ]
+        },
+        {
+          "id": "4930c09a-32ea-44bf-83f6-c1441d073b22",
+          "name": "Seven Bridges of Königsberg - Wikipedia",
+          "type": "page",
+          "url": "https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg",
+          "pageUrl": "https://en.wikipedia.org/wiki/Seven_Bridges_of_K%C3%B6nigsberg",
+          "pageTitle": "Seven Bridges of Königsberg - Wikipedia",
+          "oneImage": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Konigsberg_bridges.png",
+          "headline": "mathematical problem",
+          "_wikidataURL": "https://www.wikidata.org/entity/Q33100.json",
+          "_wikidataEntityId": "Q33100",
+          "children": [
+            {
+              "id": "541803df-31bc-4f37-94b7-d0874eaea676",
+              "name": "Kaliningrad",
+              "url": "https://www.google.com/maps/place/Kaliningrad,+Kaliningrad+Oblast,+Russia/@54.7114973,20.2993842,11z/data=!4m6!3m5!1s0x46e33d8d4b7c21a9:0x5050960016126ed3!8m2!3d54.7104264!4d20.4522144!16zL20vMDQ5aHc?entry=ttu&g_ep=EgoyMDI1MDIxMi4wIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D",
+              "pageUrl": "https://www.google.com/maps/place/Kaliningrad,+Kaliningrad+Oblast,+Russia/@54.7114973,20.2993842,11z/data=!4m6!3m5!1s0x46e33d8d4b7c21a9:0x5050960016126ed3!8m2!3d54.7104264!4d20.4522144!16zL20vMDQ5aHc?entry=ttu&g_ep=EgoyMDI1MDIxMi4wIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D",
+              "pageTitle": "Kaliningrad - Google Maps",
+              "scope": "location",
+              "type": "location",
+              "notes": "",
+              "dateCreated": "2025-02-16T12:36:28.365Z",
+              "latitude": "54.7114973",
+              "longitude": "20.2993842"
+            },
+            {
+              "id": "04f3f4b6-95d9-4c84-90b6-abf1fbedce8b",
+              "name": "Leonhard Euler - Wikipedia",
+              "type": "person",
+              "url": "https://en.wikipedia.org/wiki/Leonhard_Euler",
+              "pageUrl": "https://en.wikipedia.org/wiki/Leonhard_Euler",
+              "pageTitle": "Leonhard Euler - Wikipedia",
+              "oneImage": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Leonhard_Euler_-_Jakob_Emanuel_Handmann_%28Kunstmuseum_Basel%29.jpg",
+              "logoImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Leonhard_Euler_-_Jakob_Emanuel_Handmann_%28Kunstmuseum_Basel%29.jpg/220px-Leonhard_Euler_-_Jakob_Emanuel_Handmann_%28Kunstmuseum_Basel%29.jpg",
+              "headline": "Swiss mathematician, physicist, and engineer (1707–1783)",
+              "_wikidataURL": "https://www.wikidata.org/entity/Q7604.json",
+              "_wikidataEntityId": "Q7604",
+              "personDetails": {
+                "name": "Leonhard Euler",
+                "birthDate": "1707-04-15T00:00:00Z",
+                "birthPlace": "Basel",
+                "country": "Unknown",
+                "countryCitizenship": "Unknown",
+                "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Leonhard%20Euler.jpg",
+                "education": "University of Basel",
+                "party": "Unknown",
+                "birthname": "Unknown",
+                "genres": "Unknown",
+                "discography": "Unknown"
+              },
+              "education": "University of Basel",
+              "birthDate": "1707-04-15T00:00:00Z",
+              "birthPlace": "Basel",
+              "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Leonhard%20Euler.jpg",
+              "countryCitizenship": "Unknown",
+              "birthname": "Unknown"
+            }
+          ]
+        },
+        {
+          "id": "cc7272d5-26eb-4cb6-93fa-bbe327b0358c",
+          "name": "(25) Geesje Boon | LinkedIn",
+          "url": "https://www.linkedin.com/in/geesjeboon/",
+          "pageUrl": "https://www.linkedin.com/in/geesjeboon/",
+          "pageTitle": "(25) Geesje Boon | LinkedIn",
+          "pageHeader": "Geesje Boon",
+          "scope": "page",
+          "type": "page",
+          "notes": "",
+          "dateCreated": "2025-02-16T13:01:24.001Z",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "eafa2d9d-a52d-4576-b902-e5fba6f18059",
+      "name": "spreker: Lucas Jellema",
+      "url": "https://www.linkedin.com/in/lucas-jellema/",
+      "pageUrl": "undefined",
+      "pageTitle": "undefined",
+      "type": "person",
+      "about": "I work as IT architect at [and as] the interface between business and IT. Turning mid and long term business objectives into a solution based in part on IT technology is what I do most, and probably do best. I claim to have excellent verbal skills, demonstrated by the dozens of masterclasses I have taught and the over one hundred presentations I have delivered at conferences across the world. Similarly, I possess very good writing skills. The more than 1500 blog articles, the many white papers and publications on high ranking web sites as well as the two books I published with McGraw Hill are proof. These communication skills are crucial in the roles I have played professionally and will be crucial in the roles I aspire to adopt. I work as IT architect at [and as] the interface between business and IT. Turning mid and long term business objectives into a solution based in part on IT technology is what I do most, and probably do best. I claim to have excellent verbal skills, demonstrated by the dozens of masterclasses I have taught and the over one hundred presentations I have delivered at conferences across the world. Similarly, I possess very good writing skills. The more than 1500 blog articles, the many white papers and publications on high ranking web sites as well as the two books I published with McGraw Hill are proof. These communication skills are crucial in the roles I have played professionally and will be crucial in the roles I aspire to adopt. ",
+      "image": "undefined",
+      "location": "undefined",
+      "currentCompany": "Conclusion",
+      "currentCompanyImage": "https://media.licdn.com/dms/image/v2/D4D0BAQHsGUD6ypvK5g/company-logo_100_100/company-logo_100_100/0/1705484085196/conclusion_logo?e=1747872000&v=beta&t=WzO04a5bFGZ647M_5aNPqabVj-ODaOsEx7j4PYOfoW8",
+      "currentRole": "CTO of Conclusion",
+      "experience": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+      "experienceString": "Chief Technology Officer at Conclusion (May 2023 - Present), CTO at AMIS Services (Sep 2009 - May 2023), Technical Consultant Oracle, SOA & Java at AMIS (Aug 2002 - May 2023), Expertise Manager at AMIS Services BV (2002 - 2009), Technical Consultant Oracle and Java at Oracle (May 1994 - Jul 2002), Consultant at Oracle (1994 - 2002)",
+      "dateCreated": "Sun Feb 16 2025 14:00:40 GMT+0100 (Central European Standard Time)",
+      "tags": [],
+      "children": []
+    },
+    {
+      "id": "10104b21-64d9-483f-b5a7-7a649b817f1d",
+      "name": "locatie: Conclusion Utrecht",
+      "url": "https://www.google.com/maps/place/Conclusion/@52.0778015,0.528969,7z/data=!4m10!1m3!11m2!2sN8adJSFWSQKDyQEPaM5-oA!3e3!3m5!1s0x47c6083cb36361c7:0x613ab38e21dbadb8!8m2!3d52.3312397!4d4.9233014!16s%2Fg%2F1tdg2dsq?entry=ttu&g_ep=EgoyMDI1MDIxMi4wIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D",
+      "pageUrl": "https://www.google.com/maps/place/Conclusion/@52.0778015,0.528969,7z/data=!4m10!1m3!11m2!2sN8adJSFWSQKDyQEPaM5-oA!3e3!3m5!1s0x47c6083cb36361c7:0x613ab38e21dbadb8!8m2!3d52.3312397!4d4.9233014!16s%2Fg%2F1tdg2dsq?entry=ttu&g_ep=EgoyMDI1MDIxMi4wIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D",
+      "pageTitle": "Conclusion - Google Maps",
+      "pageHeader": "undefined",
+      "scope": "location",
+      "type": "location",
+      "notes": "",
+      "dateCreated": "Sun Feb 16 2025 17:56:32 GMT+0100 (Central European Standard Time)",
+      "latitude": "52.0778015",
+      "longitude": "0.528969",
+      "tags": []
+    }
+  ]
+}
