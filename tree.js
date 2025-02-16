@@ -459,7 +459,8 @@ const typeImageMap = {
     "music": "music.png",
     "tv": "tv.png",
     "news": "news.png",
-    "movie": "movie.png"
+    "movie": "movie.png",
+    "company": "company.png",
 
 
 
