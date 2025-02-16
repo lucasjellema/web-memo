@@ -1,96 +1,66 @@
+import { generateGUID } from './utils.js';
+
 export const processLinkedInProfile = (message) => {
-    console.log('linkedin profile',message)
+    console.log('linkedin profile', message)
 
-    // const contentDiv = document.getElementById('content');
-    // contentDiv.textContent = `
-    //       Profile Type: ${JSON.stringify(message.profile.type)} \n
-    //       Profile: ${JSON.stringify(message.profile)}
-    //       LinkedIn URL: ${message.linkedInUrl}
-    //     `;
+    const profile = message.profile
+    const newNode = {}
+    newNode.id = generateGUID();
+    newNode.name = profile.name;
+    newNode.url = message.linkedInUrl;
+    newNode.pageUrl = profile.pageUrl;
+    newNode.pageTitle = profile.pageTitle;
+    newNode.type = profile.type
+    if (profile.type === 'person') {
+        newNode.about = profile.about;
+        newNode.image = profile.image;
+        newNode.location = profile.location;
+        newNode.currentCompany = profile.currentCompany;
+        newNode.currentCompanyImage = profile.currentCompanyLogo;
+        newNode.currentRole = profile.currentRole;
+        newNode.experience = profile.experience;
+        if (profile.experience) {
+            newNode.experienceString = profile.experience.map(item => item.role + ' at ' + item.company+' ('+item.period+')').join(', ')
+        }
+        }
+    if (profile.type === 'company') {
+        newNode.about = profile.about;
+        newNode.image = profile.image;
+        newNode.location = profile.location;
+        newNode.tagline = profile.tagline;
+        newNode.industry = profile.industry;
+        newNode.followers = profile.followers;
+        newNode.numberOfEmployees = profile.numberOfEmployees;
+        newNode.locations = profile.locations;
+        newNode.websiteUrl = profile.websiteUrl;
+        if (profile.locations) {
+            newNode.locationsString = profile.locations.map(item => item).join(', ')
+        }
+    }
 
-    // const profile = message.profile;
-    // if (profile.type === 'person') {
-    //     let personNode = findNodeByProperty(cy, 'label', profile.name);
-    //     if (!personNode) {
-    //         personNode = createNode(cy, profile.name);
-    //         personNode.data('url', message.linkedInUrl);
-    //         personNode.data('type', profile.type);
-    //         personNode.data('subtype', `linkedIn${profile.type}`);
-    //     }
-    //     if (profile.currentRole) personNode.data('currentRole', profile.currentRole);
-    //     if (profile.image) personNode.data('image', profile.image);
-    //     personNode.data('about', profile.about);
-    //     if (profile.location) personNode.data('location', profile.location);
+    /* company
+    : 
+    "AMIS"
+    companyImageUrl
+    : 
+    "https://media.licdn.com/dms/image/v2/D4E0BAQHXOAz0NNvODQ/company-logo_100_100/company-logo_100_100/0/1692023929092/amis_services_logo?e=1747872000&v=beta&t=Km-vPBmuYg3vOhQz11n553N3uxWZ3RTFq16x7vGsAcc"
+    companyUrl
+    : 
+    "https://www.linkedin.com/company/209268/"
+    duration
+    : 
+    "11 yrs 10 mos"
+    period
+    : 
+    "May 2013 - Present"
+    role
+    : 
+    "Oracle consultant"
+    */
 
-    //     if (profile.currentCompany) {
-    //         personNode.data('currentCompany', profile.currentCompany);
-    //         let companyNode = findNodeByProperty(cy, 'label', profile.currentCompany);
-    //         if (!companyNode) {
-    //             companyNode = createNode(cy, profile.currentCompany);
-    //             companyNode.data('image', profile.currentCompanyLogo);
-    //             //companyNode.data('url', profile.companyUrl);
-    //             companyNode.data('type', 'company');
-    //             companyNode.data('shape', 'square');
-    //         }
-    //         const edge = createEdge(cy, personNode, companyNode);
-    //         edge.data('label', 'works at');
-    //         edge.data('type', 'workAt');
-    //         edge.data('role', profile.currentRole);
-    //     }
-    //     if (profile.latestEducation) {
-    //         let educationNode = findNodeByProperty(cy, 'label', profile.latestEducation);
-    //         if (!educationNode) {
-    //             educationNode = createNode(cy, profile.latestEducation);
-    //             educationNode.data('image', profile.latestEducationLogo);
-    //             educationNode.data('type', 'education');
-    //             educationNode.data('shape', 'diamond');
-    //         }
-    //         const edge = createEdge(cy, personNode, educationNode);
-    //         edge.data('label', 'educated at');
-    //         edge.data('type', 'educatedAt');
-    //     }
+    newNode.dateCreated = new Date()
 
-    //     // handle experience
-    //     if (profile.experience) {
-    //         // loop over elements in array experience
-    //         for (let i = 0; i < profile.experience.length; i++) {
-    //             const experience = profile.experience[i];
-    //             let companyNode = findNodeByProperty(cy, 'label', experience.company);
-
-    //             if (!companyNode) {
-    //                 companyNode = createNode(cy, experience.company);
-    //                 companyNode.data('image', experience.companyImageUrl);
-    //                 companyNode.data('url', experience.companyUrl);
-    //                 companyNode.data('type', 'company');
-    //                 companyNode.data('shape', 'square');
-    //             }
-    //             companyNode.data('linkedInUrl', experience.companyUrl);
-    //             const edge = createEdge(cy, personNode, companyNode);
-    //             edge.data('label', 'works at');
-    //             edge.data('type', 'workAt');
-    //             edge.data('role', experience.role);
-    //             edge.data('location', experience.location);
-    //             edge.data('period', experience.period);
-
-    //             const parts = experience.period.split('-')
-    //             const startDate = new Date(`${parts[0]} 1`);
-    //             edge.data('startDate', startDate);
-    //             if (parts[1] === "Present") {
-    //                 edge.data('endDate', new Date());
-    //                 edge.data('present', true);
-    //             } else {
-    //                 const endDate = new Date(`${parts[1]} 1`);
-    //                 edge.data('endDate', endDate);
-    //             }
+    return newNode
 
 
-
-    //             edge.data('about', experience.about);
-    //             edge.data('involvement', experience.involvement);
-
-    //         }
-    //     }
-
-
-    // }
 }
