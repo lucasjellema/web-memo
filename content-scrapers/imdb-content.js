@@ -50,6 +50,8 @@ const getIMDbProfile = () => {
   const profile = {}
   addName(profile)
 
+  titlePage = window.location.href.includes('/title/')
+  namePage = window.location.href.includes('/name/')
   if (titlePage) {
     addType(profile)
     addRating(profile)
@@ -57,6 +59,7 @@ const getIMDbProfile = () => {
     addPeriod(profile)
     addChipsAndAbout(profile)
     addCast(profile)
+    addMoreLikeThis(profile)
   }
   if (namePage) {
     addImage(profile)
@@ -64,6 +67,7 @@ const getIMDbProfile = () => {
     addBio(profile)
     addPersonSubtype(profile)
     addPortfolio(profile)
+    addKnownFor(profile)
 
   }
   return profile
@@ -156,7 +160,6 @@ const addImage = (profile) => {
 
 const addChipsAndAbout = (profile) => {
   let chipDiv = document.querySelector("div.ipc-chip-list");
-  console.log('chipDiv', chipDiv)
   if (chipDiv) {
     const chips = chipDiv.querySelector('div:nth-of-type(2)').querySelectorAll('a');
     if (chips) {
@@ -164,14 +167,12 @@ const addChipsAndAbout = (profile) => {
     }
   }
   let plotP = chipDiv.nextElementSibling
-  console.log('plotP', plotP)
   if (plotP) {
     profile.plot = plotP.querySelector('span:nth-of-type(2)').textContent.trim();
   }
   let detailsDiv = plotP.nextElementSibling
   if (detailsDiv) {
     const detailLines = detailsDiv.querySelector('ul').querySelectorAll(':scope >li');
-    console.log('detailLines', detailLines)
     if (detailLines) {
       for (let i = 0; i < detailLines.length; i++) {
         const detail = detailLines[i];
@@ -198,15 +199,50 @@ const addChipsAndAbout = (profile) => {
   }
 }
 
+const addKnownFor = (profile) => {
+  // find div with data-testid="nm_kwn_for_0"
+  const knownForDiv = document.querySelector('div[data-testid="nm_kwn_for_0"]');
+  if (knownForDiv) {
+    const parentKnownForDiv = knownForDiv.parentElement
+    if (parentKnownForDiv) {
+      const knownFor = []
+      for (const child of parentKnownForDiv.children) {
+        const production = {}
+        production.image = child.querySelector('img').src
+        production.movieUrl = child.querySelector('a').href
+        production.description = child.querySelector('a').ariaLabel
+        production.rating = child.querySelector('span.ipc-rating-star--rating').textContent
+        production.type = child.querySelector('div.ipc-primary-image-list-card__title-type')?.textContent
 
+        const div = child.querySelector(':scope > div:nth-of-type(2)')
+        if (div) {
+          const title = div.querySelector(':scope > div:nth-of-type(1)')
+          if (title) {
+            production.title = title.textContent.trim()
+          }
+          const character = div.querySelector(':scope > div:nth-of-type(3)')
+          if (character) {
+            production.character = character.textContent.trim()
+          }
+          const period = div.querySelector(':scope > div:nth-of-type(4)')
+          if (period) {
+            production.period = period.textContent.trim()
+          }
+        }
+
+        knownFor.push(production)
+      }
+      profile.knownFor = knownFor
+    }
+  }
+}
 
 
 const addPortfolio = (profile) => {
   let filmographyDiv = document.querySelector('div[data-testid="Filmography"]');
   if (filmographyDiv) {
-    console.log('filmographyDiv', filmographyDiv)
+
     const portfolioDiv = filmographyDiv.querySelector(':scope > section:nth-of-type(2)').querySelector(':scope > div:nth-of-type(5)')
-    console.log('portfolioDiv', portfolioDiv)
     if (portfolioDiv) {
       // const portfolioUl = portfolioDiv.querySelector('ul:nth-of-type(2)');
       // console.log('portfolioUl', portfolioUl)
@@ -221,11 +257,9 @@ const addPortfolio = (profile) => {
       const perspectives = ['actor', 'actress', 'director', 'writer', 'producer']
       for (const perspective of perspectives) {
         const portfolioUl = document.getElementById(`accordion-item-${perspective}-previous-projects`)?.querySelector('ul');
-        console.log('portfolioUl', portfolioUl)
 
         if (portfolioUl) {
           const items = portfolioUl.querySelectorAll(':scope > li');
-          console.log('items', items)
           for (let i = 0; i < items.length; i++) {
             const item = items[i];
             const performance = { perspective }
@@ -253,7 +287,6 @@ const addPortfolio = (profile) => {
             }
 
             portfolio.push(performance)
-            console.log('performance', JSON.stringify(performance))
           }
         }
       }
@@ -262,16 +295,48 @@ const addPortfolio = (profile) => {
   }
 }
 
+const addMoreLikeThis = (profile) => {
+  // section data-testid="MoreLikeThis"
+
+  const moreLikeThisSection = document.querySelector('section[data-testid="MoreLikeThis"]');
+  if (moreLikeThisSection) {
+    const moreLikeThisDiv = moreLikeThisSection.querySelector('div[data-testid="shoveler-items-container"]');
+    if (moreLikeThisDiv) {
+      const moreLikeThis = []
+      const items = moreLikeThisDiv.querySelectorAll(':scope > div');
+      if (items) {
+        for (const item of items) {
+          const moreLikeThisItem = {}
+          const image = item.querySelector('img')
+          if (image) {
+            moreLikeThisItem.image = image.src
+            moreLikeThisItem.title = image.alt
+          }
+          const ref = item.querySelector('a')
+          if (ref) {
+            moreLikeThisItem.titleUrl = ref.href
+          }
+          // span with class ipc-rating-star--rating 
+          const rating = item.querySelector('span.ipc-rating-star--rating')
+          if (rating) {
+            moreLikeThisItem.rating = rating.textContent
+          }
+
+          moreLikeThis.push(moreLikeThisItem)
+        }
+        profile.moreLikeThis = moreLikeThis
+      }
+    }
+  }
+}
+
 const addCast = (profile) => {
   let castDiv = document.querySelector('section[data-testid="title-cast"]');
-  console.log('castDiv', castDiv)
   if (castDiv) {
     const cast = castDiv.querySelector('div:nth-of-type(2)').querySelector('div:nth-of-type(2)').querySelectorAll(':scope > div');
-    console.log('cast', cast)
     if (cast) {
       profile.cast = []
       for (let i = 0; i < cast.length; i++) {
-        console.log('cast', cast[i])
         const character = {}
         const el = cast[i]
         const image = el.querySelector('img')
@@ -299,7 +364,6 @@ const addCast = (profile) => {
 const addRating = (profile) => {
   let starIcon = document.querySelector("svg.ipc-icon--star");
   if (starIcon) {
-    console.log('starIcon', starIcon)
     const ratingValue = starIcon.parentElement.nextElementSibling.textContent.trim();
     if (ratingValue) {
       profile.rating = ratingValue;
@@ -314,11 +378,9 @@ const addBio = (profile) => {
     if (grandparent) {
       const nextElementSibling = grandparent.nextElementSibling
       const divWithBio = nextElementSibling.querySelector(':scope > div:nth-of-type(2)')
-      console.log('divWithBio', divWithBio)
       if (divWithBio) {
         const bio = divWithBio.querySelector('section').querySelector(':scope > div').querySelector(':scope > div').querySelector(':scope > div').querySelector(':scope > div').textContent
         profile.bio = bio
-        console.log('bio', bio)
       }
     }
   }
