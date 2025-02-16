@@ -1,5 +1,7 @@
 const STORAGE_KEY = 'web-memo-projects';   // LocalStorage key for the projects data
 
+export const WEB_MEMO_VERSION = "0.8";
+
 // Get all saved projects from local storage
 export function getSavedProjects() {
     const projects = localStorage.getItem(STORAGE_KEY);
@@ -44,12 +46,29 @@ export function getQueryParam(param) {
 export const harvestTags = (node, allTags) => {
     // collect all tags in node and child nodes and add to Set tags
     // add node.tags to allTags
-    if (node.tags) {
+    if (node?.tags) {
         allTags.add(...node.tags)
     }
 
-    if (node.children)
+    if (node?.children)
         for (let childNode of node.children) {
             harvestTags(childNode, allTags)
         }
 } 
+
+export const exportProject = (node) => {
+    const json = JSON.stringify(node, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    const today = new Date();
+    const dateStr = today.toISOString().slice(0, 10).replace(/-/g, "");
+    if (node.type === "project") {
+        a.download = `web-memo-project-${node.name}-${dateStr}.json`;
+    } else if (node.type === "root") {
+        a.download = `web-memo-all-projects-${dateStr}.json`;
+    }
+    a.click();
+    URL.revokeObjectURL(url);
+}

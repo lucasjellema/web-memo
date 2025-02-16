@@ -1,4 +1,4 @@
-import { saveProjects, getSavedProjects, getJSONFile, getQueryParam, generateGUID, harvestTags } from './utils.js';
+import { saveProjects, getSavedProjects, getJSONFile, getQueryParam, generateGUID, harvestTags ,exportProject} from './utils.js';
 import { showPropertyPanel, hidePropertyPanel } from './property-panel.js';
 import { prepareSearch } from './search.js';
 let changed = false;
@@ -161,8 +161,8 @@ function moveNode(draggedId, targetId) {
 // Find a node by ID in a tree structure
 function findNodeById(nodes, id) {
     for (let node of nodes) {
-        if (node.id === id) return node;
-        if (node.children) {
+        if (node && node.id === id) return node;
+        if (node && node.children) {
             let found = findNodeById(node.children, id);
             if (found) return found;
         }
@@ -173,12 +173,12 @@ function findNodeById(nodes, id) {
 // Remove a node from its parent
 function removeNodeById(nodes, id) {
     for (let i = 0; i < nodes.length; i++) {
-        if (nodes[i].id === id) {
+        if (nodes[i]?.id === id) {
             nodes.splice(i, 1);
             return true;
         }
-        if (nodes[i].children) {
-            let removed = removeNodeById(nodes[i].children, id);
+        if (nodes[i]?.children) {
+            let removed = removeNodeById(nodes[i]?.children, id);
             if (removed) return true;
         }
     }
@@ -268,11 +268,13 @@ const importProject = (node) => {
                     if (importedChild.type === 'project') {
                         importedChild.id = `proj-${generateGUID()}`; // Unique ID
                         node.children.push(importedChild);
+                        if (!data.harvestedTags) data.harvestedTags = new Set();
                         harvestTags(importedChild, data.harvestedTags)
 
                     }
                 })
             } else {
+                if (!data.harvestedTags) data.harvestedTags = new Set();
                 node.children.push(importedData);
                 harvestTags(importedData, data.harvestedTags)
             }
@@ -425,22 +427,7 @@ document.addEventListener("treeContentLoaded", async () => {
 
 });
 
-const exportProject = (node) => {
-    const json = JSON.stringify(node, null, 2);
-    const blob = new Blob([json], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    const today = new Date();
-    const dateStr = today.toISOString().slice(0, 10).replace(/-/g, "");
-    if (node.type === "project") {
-        a.download = `web-memo-project-${node.name}-${dateStr}.json`;
-    } else if (node.type === "root") {
-        a.download = `web-memo-all-projects-${dateStr}.json`;
-    }
-    a.click();
-    URL.revokeObjectURL(url);
-}
+
 
 export const addTreeNode = (memoNode) => {
     let parentNode = selectedNode
