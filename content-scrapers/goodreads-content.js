@@ -2,14 +2,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 
   // // I will let ChatGPT explain:
-// chrome.tabs.sendMessage() only supports synchronous message passing by default. If the content script's listener is asynchronous, it doesn't return a response immediately, and sendMessage() doesn't actually wait for the async operation to complete. Instead, it resolves as soon as the listener returns, which may happen before your async operation is done.
+  // chrome.tabs.sendMessage() only supports synchronous message passing by default. If the content script's listener is asynchronous, it doesn't return a response immediately, and sendMessage() doesn't actually wait for the async operation to complete. Instead, it resolves as soon as the listener returns, which may happen before your async operation is done.
 
-// Solution:
-// You need to return a Promise inside the message listener.
-// Explanation:
-// The message listener is asynchronous, but since the callback itself isn't async, we manually wrap it in an IIFE (Immediately Invoked Function Expression).
-// The sendResponse function is used inside the async operation.
-// The critical part: returning true from the listener keeps the messaging channel open, allowing the async operation to complete before sending the response.
+  // Solution:
+  // You need to return a Promise inside the message listener.
+  // Explanation:
+  // The message listener is asynchronous, but since the callback itself isn't async, we manually wrap it in an IIFE (Immediately Invoked Function Expression).
+  // The sendResponse function is used inside the async operation.
+  // The critical part: returning true from the listener keeps the messaging channel open, allowing the async operation to complete before sending the response.
 
   (async () => {
     try {
@@ -104,8 +104,6 @@ const scrapeBookData = async (profile) => {
     if (bookDetailsButton) {
       bookDetailsButton.click();
       await delay(300)
-
-
       const dtElements = bookDetailsElement.querySelectorAll('dt');
       for (const dtElement of dtElements) {
         const dtText = dtElement.textContent.trim();
@@ -119,27 +117,34 @@ const scrapeBookData = async (profile) => {
       }
     }
   }
+  // find similar books
+  // ul with class="CarouselGroup"
+  const similarBooksElement = document.querySelector('ul.CarouselGroup');
+  if (similarBooksElement) {
+    const similarBooks = similarBooksElement.querySelectorAll('li');
+    if (similarBooks) {
+      // iterate over similar books
+      profile.similarBooks = [];
+      for (const similarBook of similarBooks) {
+        const book = {}
+        // find image
+        const imageElement = similarBook.querySelector('img');
+        book.image = imageElement.src;
+        // div element with data-testid="title"
+        const titleElement = similarBook.querySelector('div[data-testid="title"]');
+        book.title = titleElement.textContent.trim();
+        const authorElement = similarBook.querySelector('div[data-testid="author"]');
+        book.author = authorElement.textContent.trim();
+        book.pageUrl = similarBook.querySelector('a').href;
+        // find span with class AverageRating__ratingValue
+        const ratingElement = similarBook.querySelector('span.AverageRating__ratingValue');
+        book.rating = ratingElement.textContent.trim();
+        profile.similarBooks.push(book);
+      }
 
-  // // find button aria-label="Book details and editions"
-  // const bookDetailsAndEditionsButton = document.querySelector('button[aria-label="Book details and editions"]');
-
-
-  // if (bookDetailsAndEditionsButton) {
-  //   await bookDetailsAndEditionsButton.click();
-  //   // find <dt> with textcontent == "Setting"
-  //   const settingElement = document.querySelector('dt:contains("Setting")');
-  //   if (settingElement) {
-  //     const settingValueElement = settingElement.nextElementSibling;
-  //     profile.setting = settingValueElement.textContent.trim();
-  //   }
-  //   const charactersElement = document.querySelector('dt:contains("Characters")');
-  //   if (charactersElement) {
-  //     const charactersValueElement = charactersElement.nextElementSibling;
-  //     profile.characters = charactersValueElement.textContent.trim();
-  //   }
-  // }
+    }
+  }
 }
-
 
 const scrapeAuthorData = (profile) => {
   // div with class authorLeftContainer

@@ -35,6 +35,8 @@ export const processGoodreadsProfile = (message) => {
         if (profile.setting) newNode.setting = profile.setting;
         if (profile.characters) newNode.characters = profile.characters;
         // TODO settings - add to tags
+
+        if (profile.similarBooks) newNode.similarBooks = profile.similarBooks;
     }
     if (profile.subtype === 'person') { // author
         if (profile.description) newNode.description = profile.description;
