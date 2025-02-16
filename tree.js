@@ -29,7 +29,7 @@ export function createTree(parent, nodes) {
     if (!Array.isArray(nodes)) return
 
     for (const node of nodes) {
-
+try {
         const isRoot = (node.type == "root")
         if (node.show == false) continue;
         let div = document.createElement("div");
@@ -133,6 +133,9 @@ export function createTree(parent, nodes) {
             });
             createTree(childContainer, node.children);
         }
+    } catch (error) {
+        console.error(`Error creating tree: ${error}`);
+    }
     };
 }
 
@@ -325,6 +328,7 @@ document.addEventListener("click", (event) => {
 function deleteNode(node) {
     function recursiveDelete(arr, nodeId) {
         return arr.filter(item => {
+            if (!item) return true;
             if (item.id === nodeId) return false;
             if (item.children) item.children = recursiveDelete(item.children, nodeId);
             return true;
@@ -466,6 +470,9 @@ const typeImageMap = {
     "person": "person.png",
     "note": "note.png",
     "music": "music.png",
+    "tv": "tv.png",
+    "news": "news.png",
+    "movie": "movie.png"
 
 
 
