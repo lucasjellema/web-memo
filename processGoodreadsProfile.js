@@ -29,12 +29,12 @@ export const processGoodreadsProfile = (message) => {
             if (profile.genres && Array.isArray(profile.genres)) {
                 newNode.tags = profile.genres?.map(tag => tag.trim());
             } else {
-
-                newNode.tags = profile.genres?.split(',').map(tag => tag.trim());
-                
+                newNode.tags = profile.genres?.split(',').map(tag => tag.trim());                
             }
-
         }
+        if (profile.setting) newNode.setting = profile.setting;
+        if (profile.characters) newNode.characters = profile.characters;
+        // TODO settings - add to tags
     }
     if (profile.subtype === 'person') { // author
         if (profile.description) newNode.description = profile.description;

@@ -1,37 +1,50 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log("Received message:", message);
-  if (message.type === 'webmemoGoodreadsRequest') {
-    console.log("Web Memo Goodreads Info request received: ");
-    let profile = getGoodreadsProfile(message.linkUrl);
-    console.log("Profile:", profile)
-    sendResponse({ status: 'success', data: profile, pageUrl: window.location.href });
-  }
+
+
+  // // I will let ChatGPT explain:
+// chrome.tabs.sendMessage() only supports synchronous message passing by default. If the content script's listener is asynchronous, it doesn't return a response immediately, and sendMessage() doesn't actually wait for the async operation to complete. Instead, it resolves as soon as the listener returns, which may happen before your async operation is done.
+
+// Solution:
+// You need to return a Promise inside the message listener.
+// Explanation:
+// The message listener is asynchronous, but since the callback itself isn't async, we manually wrap it in an IIFE (Immediately Invoked Function Expression).
+// The sendResponse function is used inside the async operation.
+// The critical part: returning true from the listener keeps the messaging channel open, allowing the async operation to complete before sending the response.
+
+  (async () => {
+    try {
+      console.log("Received message:", message);
+      if (message.type === 'webmemoGoodreadsRequest') {
+        console.log("Web Memo Goodreads Info request received: ");
+        let profile = await getGoodreadsProfile();
+        console.log("Profile:", profile)
+        sendResponse({ status: 'success', data: profile, pageUrl: window.location.href });
+      }
+    } catch (error) {
+      sendResponse({ success: false, error: error.message });
+    }
+  })();
+  return true; // Keeps the message channel open for async sendResponse
 });
 
 console.log('goodreads-content.js loaded - Web Memo extension is active');
 
-const getGoodreadsProfile = () => {
-
-
+const getGoodreadsProfile = async () => {
   const profile = {}
-
   profile.pageTitle = document.title;
   profile.pageUrl = window.location.href;
   const isBookPage = window.location.href.includes('/book/')
   const isAuthorPage = window.location.href.includes('/author/')
   profile.subtype = isBookPage ? 'book' : isAuthorPage ? 'person' : 'book'
-
   if (isBookPage) {
-    scrapeBookData(profile);
+    const x = await scrapeBookData(profile);
   } else if (isAuthorPage) {
     scrapeAuthorData(profile);
   }
-
-
   return profile
 }
 
-const scrapeBookData = (profile) => {
+const scrapeBookData = async (profile) => {
   const bookCardElement = document.querySelector('div.BookCard');
   if (bookCardElement) {
     // find image
@@ -82,6 +95,49 @@ const scrapeBookData = (profile) => {
     }
 
   }
+
+  // div with class BookDetails
+  const bookDetailsElement = document.querySelector('div.BookDetails');
+  // find first button  in div
+  if (bookDetailsElement) {
+    const bookDetailsButton = bookDetailsElement.querySelector('button');
+    if (bookDetailsButton) {
+      bookDetailsButton.click();
+      await delay(300)
+
+
+      const dtElements = bookDetailsElement.querySelectorAll('dt');
+      for (const dtElement of dtElements) {
+        const dtText = dtElement.textContent.trim();
+        if (dtText === "Setting") {
+          const settingValueElement = dtElement.nextElementSibling;
+          profile.setting = settingValueElement.textContent.trim();
+        } else if (dtText === "Characters") {
+          const charactersValueElement = dtElement.nextElementSibling;
+          profile.characters = charactersValueElement.textContent.trim();
+        }
+      }
+    }
+  }
+
+  // // find button aria-label="Book details and editions"
+  // const bookDetailsAndEditionsButton = document.querySelector('button[aria-label="Book details and editions"]');
+
+
+  // if (bookDetailsAndEditionsButton) {
+  //   await bookDetailsAndEditionsButton.click();
+  //   // find <dt> with textcontent == "Setting"
+  //   const settingElement = document.querySelector('dt:contains("Setting")');
+  //   if (settingElement) {
+  //     const settingValueElement = settingElement.nextElementSibling;
+  //     profile.setting = settingValueElement.textContent.trim();
+  //   }
+  //   const charactersElement = document.querySelector('dt:contains("Characters")');
+  //   if (charactersElement) {
+  //     const charactersValueElement = charactersElement.nextElementSibling;
+  //     profile.characters = charactersValueElement.textContent.trim();
+  //   }
+  // }
 }
 
 
@@ -179,3 +235,8 @@ const scrapeAuthorData = (profile) => {
   }
 }
 
+function delay(milliseconds) {
+  return new Promise(resolve => {
+    setTimeout(resolve, milliseconds);
+  });
+}

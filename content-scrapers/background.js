@@ -75,7 +75,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
   if (info.menuItemId === "webmemoGitHubInfoForNetwork") {
     await handleGitHubInfo(info, tab);
-  } 
+  }
   if (info.menuItemId === "webmemoGoodreadsInfoForNetwork") {
     await handleGoodreadsInfo(info, tab);
   }
@@ -153,11 +153,27 @@ async function handleGoodreadsInfo(info, tab) {
   console.log('goodreads info clicked ', info);
   (async () => {
     const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-    const response = await chrome.tabs.sendMessage(tab.id, { type: 'webmemoGoodreadsRequest' });
-    console.log(response);
-    chrome.runtime.sendMessage({
-      type: 'goodreadsProfile',
-      profile: response.data,
+    // const response = await chrome.tabs.sendMessage(tab.id, { type: 'webmemoGoodreadsRequest' });
+    // The background script wraps sendMessage() in a Promise.
+    // The content script properly handles async responses.
+    // The return true; keeps the channel open until sendResponse() is called.
+    // Now await chrome.tabs.sendMessage() will actually wait for the response. 🚀
+    const goodreadsResponse = await new Promise((resolve) => {
+      chrome.tabs.sendMessage(tab.id, { type: 'webmemoGoodreadsRequest' }, (response) => {
+        console.log('in handler', response);
+        chrome.runtime.sendMessage({
+          type: 'goodreadsProfile',
+          profile: response.data,
+        });
+        resolve(response);
+      });
+
+     // console.log('goodreadsResponse',goodreadsResponse);
+      // chrome.runtime.sendMessage({
+      //   type: 'goodreadsProfile',
+      //   profile: goodreadsResponse.data,
+      // });
+
     });
   })()
 }
