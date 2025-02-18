@@ -307,6 +307,7 @@ const importRemoteProject = async (node, remoteURL) => {
             node.children.push(importedData);
         }
         changed = true
+        if (!data.harvestedTags) data.harvestedTags = new Set();
         harvestTags(importedData, data.harvestedTags)
         refreshTree();
         return node
