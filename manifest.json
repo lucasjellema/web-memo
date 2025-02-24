@@ -87,17 +87,17 @@
   ],
   "action": {
     "default_icon": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
+      "16": "icons/web-memo16.png",
+      "48": "icons/web-memo48.png",
+      "128": "icons/web-memo128.png"
     }
   },
   "side_panel": {
     "default_path": "web_memo_side_panel.html"
   },
   "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "icons/web-memo16.png",
+    "48": "icons/web-memo48.png",
+    "128": "icons/web-memo128.png"
   }
 }
