@@ -1,0 +1,200 @@
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        display: flex;
+        height: 100vh;
+    }
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 5px 2fr; /* Added resizer bar */
+        width: 100%;
+        transition: grid-template-columns 0.3s ease;
+    }
+    .sidebar, .content {
+        padding: 10px;
+        overflow: auto;
+    }
+    .sidebar {
+        background: #f4f4f4;
+    }
+    .resizer {
+        width: 5px;
+        background: #aaa;
+        cursor: ew-resize;
+    }
+    .content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        background: #fff;
+    }
+    .tile {
+        flex: 1 1 calc(50% - 10px);
+        height: 300px;
+        border: 1px solid #ddd;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    .tile iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        flex-grow: 1;
+    }
+    .tile .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #ddd;
+        padding: 5px;
+        cursor: grab;
+    }
+    .tile .close-btn {
+        background: red;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    .drag-handle {
+        flex-grow: 1;
+        cursor: grab;
+    }
+    .dragging {
+        opacity: 0.5;
+    }
+    button {
+        margin-bottom: 10px;
+    }
+  </style>
+  
+  <div class="container" id="layout">
+    <div class="sidebar" id="sidebar">
+        <button onclick="toggleLayout()">Flip Layout</button>
+        <button onclick="addTile()">Add Tile</button>
+        <p>Click a link to open it:</p>
+        <ul>
+            <li><a href="https://example.com" onclick="openInTile(event, 'https://example.com')">Example 1</a></li>
+            <li><a href="https://wikipedia.org" onclick="openInTile(event, 'https://wikipedia.org')">Wikipedia</a></li>
+            <li><a href="https://developer.mozilla.org" onclick="openInTile(event, 'https://developer.mozilla.org')">MDN</a></li>
+        </ul>
+    </div>
+    <div class="resizer" id="resizer"></div>
+    <div class="content" id="content"></div>
+  </div>
+  
+  <script>
+    function toggleLayout() {
+        const layout = document.getElementById("layout");
+        const sidebar = document.getElementById("sidebar");
+        const resizer = document.getElementById("resizer");
+  
+        if (sidebar.style.order === "2") {
+            sidebar.style.order = "0"; // Move back to left
+            resizer.style.order = "1";
+            layout.style.gridTemplateColumns = "1fr 5px 2fr";
+        } else {
+            sidebar.style.order = "2"; // Move to right
+            resizer.style.order = "1";
+            layout.style.gridTemplateColumns = "2fr 5px 1fr";
+        }
+    }
+  
+    function addTile() {
+        const content = document.getElementById("content");
+        const tile = document.createElement("div");
+        tile.className = "tile";
+  
+        const toolbar = document.createElement("div");
+        toolbar.className = "toolbar";
+  
+        const dragHandle = document.createElement("div");
+        dragHandle.className = "drag-handle";
+        dragHandle.innerText = "Drag here";
+        dragHandle.addEventListener("mousedown", (e) => startDrag(e, tile));
+  
+        const closeButton = document.createElement("button");
+        closeButton.innerText = "X";
+        closeButton.className = "close-btn";
+        closeButton.onclick = () => tile.remove();
+  
+        toolbar.appendChild(dragHandle);
+        toolbar.appendChild(closeButton);
+  
+        const iframe = document.createElement("iframe");
+  
+        tile.appendChild(toolbar);
+        tile.appendChild(iframe);
+        content.appendChild(tile);
+    }
+  
+    function openInTile(event, url) {
+        event.preventDefault();
+        const tiles = document.querySelectorAll(".tile iframe");
+        for (const iframe of tiles) {
+            if (!iframe.src) {
+                iframe.src = url;
+                return;
+            }
+        }
+        addTile();
+        document.querySelector(".tile:last-child iframe").src = url;
+    }
+  
+    let dragTile = null;
+    function startDrag(event, tile) {
+        dragTile = tile;
+        tile.classList.add("dragging");
+        document.addEventListener("mousemove", moveTile);
+        document.addEventListener("mouseup", stopDrag);
+    }
+  
+    function moveTile(event) {
+        if (!dragTile) return;
+        const content = document.getElementById("content");
+        const tiles = Array.from(content.children);
+  
+        for (const tile of tiles) {
+            const rect = tile.getBoundingClientRect();
+            if (event.clientY < rect.top + rect.height / 2) {
+                content.insertBefore(dragTile, tile);
+                return;
+            }
+        }
+        content.appendChild(dragTile);
+    }
+  
+    function stopDrag() {
+        if (dragTile) {
+            dragTile.classList.remove("dragging");
+            dragTile = null;
+        }
+        document.removeEventListener("mousemove", moveTile);
+        document.removeEventListener("mouseup", stopDrag);
+    }
+  
+    const resizer = document.getElementById("resizer");
+    let isResizing = false;
+  
+    resizer.addEventListener("mousedown", (e) => {
+        isResizing = true;
+        document.addEventListener("mousemove", resize);
+        document.addEventListener("mouseup", stopResize);
+    });
+  
+    function resize(e) {
+        if (!isResizing) return;
+        const layout = document.getElementById("layout");
+        const sidebarWidth = e.clientX;
+        const remainingWidth = window.innerWidth - sidebarWidth - 5; // 5px resizer width
+        layout.style.gridTemplateColumns = `${sidebarWidth}px 5px ${remainingWidth}px`;
+    }
+  
+    function stopResize() {
+        isResizing = false;
+        document.removeEventListener("mousemove", resize);
+        document.removeEventListener("mouseup", stopResize);
+    }
+  </script>
+  
